@@ -26,6 +26,7 @@ const Header = () => {
   // slider end
 
   const [searchType, setsearchType] = useState('delivary');
+  const [open, setopen] = useState(false);
 
   return (
     <div className="flex flex-col justify-center items-center static h-screen">
@@ -57,37 +58,50 @@ const Header = () => {
 
       {/* middle cart */}
       <div className='absolute flex justify-center items-center h-screen'>
-        <div className='flex flex-col rounded-lg bg-white p-5 drop-shadow-2xl gap-3'>
-          <p>Start your order here</p>
-          <div className='grid grid-rows-2 md:grid-rows-1 grid-flow-col md:grid-flow-col-2 gap-4 '>
-            <div className='flex gap-2 justify-center items-center'>
-              <div
-                className={`h-24 w-auto min-w-32  p-1 flex justify-center items-center flex-col  rounded-lg border-2 border-gray-300 ${searchType == 'delivary' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
-                onClick={() => setsearchType('delivary')}
-              >
-                <img src="https://www.kfc.lk/images/icons/scooter.svg"
-                  style={{ filter: `invert(1) ${searchType == 'delivary' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
-                  width={50}
-                />
-                <p>Delivery</p>
-              </div>
-              <div
-                className={`h-24 w-auto min-w-32 p-1 flex justify-center items-center flex-col rounded-lg border-2 border-gray-300 ${searchType == 'pickup' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
-                onClick={() => setsearchType('pickup')}
-              >
-                <img src="https://www.kfc.lk/images/icons/food.svg"
-                  style={{ filter: `invert(1) ${searchType == 'pickup' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
-                  width={50}
-                />
-                <p>Pickup</p>
+        {/* open time show  */}
+        {
+          open ?
+            <div className='flex flex-col rounded-lg bg-white p-5 drop-shadow-2xl gap-3'>
+              <p>Start your order here</p>
+              <div className='grid grid-rows-2 md:grid-rows-1 grid-flow-col md:grid-flow-col-2 gap-4 '>
+                <div className='flex gap-2 justify-center items-center'>
+                  <div
+                    className={`h-24 w-auto min-w-32  p-1 flex justify-center items-center flex-col  rounded-lg border-2 border-gray-300 ${searchType == 'delivary' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
+                    onClick={() => setsearchType('delivary')}
+                  >
+                    <img src="https://www.kfc.lk/images/icons/scooter.svg"
+                      style={{ filter: `invert(1) ${searchType == 'delivary' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
+                      width={50}
+                    />
+                    <p>Delivery</p>
+                  </div>
+                  <div
+                    className={`h-24 w-auto min-w-32 p-1 flex justify-center items-center flex-col rounded-lg border-2 border-gray-300 ${searchType == 'pickup' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
+                    onClick={() => setsearchType('pickup')}
+                  >
+                    <img src="https://www.kfc.lk/images/icons/food.svg"
+                      style={{ filter: `invert(1) ${searchType == 'pickup' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
+                      width={50}
+                    />
+                    <p>Pickup</p>
+                  </div>
+                </div>
+                <div className='col-span-2 grid grid-rows-2 grid-flow-col gap-3'>
+                  <p className='bg-gray-200 px-3 py-2 w-96 rounded'>Enter Your Delivary Location</p>
+                  <button className='bg-red-800 rounded text-white hover:bg-red-700'><Search /> Search</button>
+                </div>
               </div>
             </div>
-            <div className='col-span-2 grid grid-rows-2 grid-flow-col gap-3'>
-              <p className='bg-gray-200 px-3 py-2 w-96 rounded'>Enter Your Delivary Location</p>
-              <button className='bg-red-800 rounded text-white hover:bg-red-700'><Search /> Search</button>
+
+            :
+            <div className='flex flex-col rounded-lg bg-white p-5 drop-shadow-2xl gap-3'>
+              <p className="font-sans">Sorry!! We are closed</p>
+              <div className='grid grid-rows-2 md:grid-rows-1 grid-flow-col md:grid-flow-col-2 gap-4 '>
+                <span className="font-sans text-sm text-red-500">Dear Customer, Orders are taken only between 10: 00 AM to 10: 00 PM. Thank you for your cooperation.</span>
+              </div>
             </div>
-          </div>
-        </div>
+
+        }
       </div>
 
     </div>

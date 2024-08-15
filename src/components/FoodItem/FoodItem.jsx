@@ -2,23 +2,24 @@ import React, { useContext } from 'react'
 import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext';
+import { Alert } from '@mui/material';
 
-const FoodItem = ({id,name,price,description,image}) => {
+const FoodItem = ({ id, name, price, description, image }) => {
 
-  const {cartItem,addToCart,removeFromCart} = useContext(StoreContext);
+  const { cartItem, addToCart, removeFromCart } = useContext(StoreContext);
 
   return (
     <div className='food-item duration-150 hover:scale-105 before:scale-105 drop-shadow-2xl'>
       <div className="food-item-image-container">
         <img className='food-item-image' src={image} alt="" />
         {
-          !cartItem[id] 
-          ? <img className='add' onClick={()=>addToCart(id)} src={assets.add_icon_white} alt="" srcset="" />
-          : <div className='food-item-counter'>
-              <img onClick={()=>removeFromCart(id)} src={assets.remove_icon_red} alt="" srcset="" />
+          !cartItem[id]
+            ? <img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" srcset="" />
+            : <div className='food-item-counter'>
+              <img onClick={() => removeFromCart(id)} src={assets.remove_icon_red} alt="" srcset="" />
               <p>{cartItem[id]}</p>
-              <img onClick={()=>addToCart(id)} src={assets.add_icon_green} alt="" srcset="" />
-          </div>
+              <img onClick={() => addToCart(id)} src={assets.add_icon_green} alt="" srcset="" />
+            </div>
         }
       </div>
       <div className="food-item-info">
@@ -27,7 +28,10 @@ const FoodItem = ({id,name,price,description,image}) => {
           <img src={assets.rating_starts} alt="" />
         </div>
         <p className='food-item-description'>{description}</p>
-        <p className="food-item-price">${price}</p>
+        <div className='flex gap-5 items-center'>
+          <p className="food-item-price">Rs:{price}</p>
+          <button className='bg-red-800 rounded text-white hover:bg-red-700 h-8 px-4 w-full' onClick={() => addToCart(id)}>Add to cart</button>
+        </div>
       </div>
     </div>
   )

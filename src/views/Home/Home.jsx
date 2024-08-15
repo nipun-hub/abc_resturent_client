@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <SpecialFood limit={5} />
+      <SpecialFood limit={6} />
       {/* <ExploreMenu category={category} setcategory={setcategory}/> */}
       {/* <FoodDisplay category={category}/> */}
       {/* <AppDownloader/> */}

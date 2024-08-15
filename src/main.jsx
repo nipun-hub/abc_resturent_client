@@ -5,7 +5,6 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import StoreContextProvider from './context/StoreContext.jsx';
 import Home from './views/Home/Home';
-import Cart from './views/Cart/Cart';
 import PlaceOrder from './views/PlaceOrder/PlaceOrder';
 import router from './routes/index.jsx';
 
