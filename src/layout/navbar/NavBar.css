@@ -26,7 +26,7 @@
     gap: 40px;
 }
 
-.navBar button{
+/* .navBar button{
     background-color: transparent;
     font-size: 16px;
     color: #49557e;
@@ -35,11 +35,11 @@
     border-radius: 50px;
     cursor: pointer;
     transition: 0.3s;
-}
+} */
 
-.navBar button:hover{
+/* .navBar button:hover{
     background-color: #FFF4F2;
-}
+} */
 
 .navBar .active{
     padding-bottom: 2px;

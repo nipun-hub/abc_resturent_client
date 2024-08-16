@@ -4,7 +4,7 @@ import { StoreContext } from '../../context/StoreContext';
 import { AddCircleOutline, Delete, DeleteForever, DeleteOutline, ProductionQuantityLimits, RemoveCircleOutline, ShoppingCart } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
-const Cart = ({ isOpen, setIsOpen }) => {
+const Cart = ({ isOpen, setIsOpen, setcheckoutOpen }) => {
 
     const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotlCartAmmount } = useContext(StoreContext);
     return (
@@ -59,11 +59,13 @@ const Cart = ({ isOpen, setIsOpen }) => {
                             <p>Packing Charge : Rs. 100.00</p>
                             <p className='text-green-400'>Totle Charge : Rs. {getTotlCartAmmount()}.00</p>
                         </div>
-                        <Link to='/checkout'>
-                            <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'>
-                                <span>Checkout</span>
-                            </button>
-                        </Link>
+                        <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'
+                            onClick={() => {
+                                setIsOpen(false)
+                                setcheckoutOpen()
+                            }}>
+                            <span>Checkout</span>
+                        </button>
                     </div>
                 </div>
             </Drawer>

@@ -1,3 +1,4 @@
+import { Close } from "@mui/icons-material";
 import React from "react";
 
 export default function Drawer({ children, isOpen, setIsOpen }) {
@@ -12,11 +13,12 @@ export default function Drawer({ children, isOpen, setIsOpen }) {
     >
       <section
         className={
-          " w-screen max-w-lg right-0 absolute bg-white h-[95%] shadow-xl delay-400 duration-500 ease-in-out transition-all transform  rounded-xl me-6" +
+          " w-screen max-w-sm sm:max-w-md md:max-w-lg right-0 absolute bg-white h-[95%] shadow-xl delay-400 duration-500 ease-in-out transition-all transform  rounded-xl me-6" +
           (isOpen ? " translate-x-0 " : " translate-x-full ")
         }
       >
-        <article className="relative w-screen max-w-lg pb-10 flex flex-col space-y-6  h-full">
+        <article className="relative w-screen max-w-sm sm:max-w-md md:max-w-lg pb-10 flex flex-col space-y-6  h-full pt-3">
+          <span className='absolute top-0 right-0 m-3 text-gray-500' onClick={() => setIsOpen(false)}><Close /></span>
           {children}
         </article>
       </section>

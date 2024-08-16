@@ -50,7 +50,7 @@
     padding: 8px;
 }
 
-.login-popup-container button{
+/* .login-popup-container button{
     width: 100%;
     border: none;
     padding: 10px;
@@ -59,7 +59,7 @@
     background-color: tomato;
     font-size: 15px;
     cursor: pointer;
-}
+} */
 
 .login-popup-condition{
     display: flex;

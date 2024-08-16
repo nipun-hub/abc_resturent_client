@@ -7,6 +7,18 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
+    const [token, setToken] = useState({
+        token: 'dfghdfhdfhfdshsdhdfhfghdfrh',
+        name: 'Nipun Theekshna',
+    });
+
+    const updateToken = (target, value) => {
+    setToken(prevToken => ({
+        ...prevToken,
+        [target]: value,
+    }));
+}
+
     const [cartItem, setcartItem] = useState({});
 
     const addToCart = (itemId) => {
@@ -36,14 +48,29 @@ const StoreContextProvider = (props) => {
         return totalAmmounnt;
     }
 
+    // set review secrion
+    const [reviewsOpen, setreviewsOpen] = useState(false);
+    const [id, setid] = useState();
+    const handlereviewsOpen = (id) => {
+        setid(id);
+        setreviewsOpen(true);
+    }
+    const handlereviewsClose = () => setreviewsOpen(false);
+
     const contextValue = {
+        token,
+        updateToken,
         food_list,
         cartItem,
         setcartItem,
         addToCart,
         deleteFromCart,
         removeFromCart,
-        getTotlCartAmmount
+        getTotlCartAmmount,
+        reviewsOpen,
+        id,
+        handlereviewsOpen,
+        handlereviewsClose,
     }
 
 
