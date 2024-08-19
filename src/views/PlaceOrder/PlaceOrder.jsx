@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { StoreContext } from '../../context/StoreContext';
-import { AddCircleOutline, DeleteForever, RemoveCircleOutline } from '@mui/icons-material';
-import { Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, FormLabel, Radio, TextField } from '@mui/material';
+import { Handshake, Hotel, LunchDining, Money, Payment, Restaurant } from '@mui/icons-material';
 
 const style = {
   position: 'absolute',
@@ -16,15 +15,17 @@ const style = {
   bgcolor: 'background.paper',
 };
 
-const PlaceOrder = ({ placeOrderOpen, setplaceOrderclose, handlecouponOpen }) => {
+const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
+  const { getTotalCartAmount } = useContext(StoreContext);
 
-  const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotlCartAmmount } = React.useContext(StoreContext);
+  const [step, setStep] = useState('selectMethod'); // [ selectMethod , addCardData , addAddress , done]
+  const [paymentMethod, setPaymentMethod] = useState('online'); // [ online , cod , visitShop ]
 
   return (
     <div>
       <Modal
-        open={placeOrderOpen}
-        onClose={setplaceOrderclose}
+        open={Open}
+        onClose={Close}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -39,11 +40,11 @@ const PlaceOrder = ({ placeOrderOpen, setplaceOrderclose, handlecouponOpen }) =>
                 </div>
                 <hr />
                 <div className='flex flex-col gap-4 pt-5 justify-between'>
-                  <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full p-3 ' onClick={handlecouponOpen}>Enter Your Coopen Code</button>
+                  <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full p-3 ' onClick={handleCouponOpen}>Enter Your Cooped Code</button>
 
                   <div>
                     <div className='flex justify-between border-t-2 p-3 bg-gray-50'>
-                      <p>Totle</p><p>Rs: {getTotlCartAmmount()}.00</p>
+                      <p>Total</p><p>Rs: {getTotalCartAmount()}.00</p>
                     </div>
                     <div className='flex justify-between border-t-2 p-3 bg-gray-50'>
                       <p>Delivery Charge</p><p>Rs: 15.00</p>
@@ -55,7 +56,7 @@ const PlaceOrder = ({ placeOrderOpen, setplaceOrderclose, handlecouponOpen }) =>
                       <p>Discount amount	</p><p>Rs: 350.00</p>
                     </div>
                     <div className='flex justify-between border-t-2 p-3 bg-gray-50 text-red-400 text-2xl items-center'>
-                      <p className='flex gap-1 items-center'><img src="https://www.kfc.lk/images/icons/stamp.png" alt="" width={50} />Totle</p><p>Rs: {getTotlCartAmmount() + 15}.00</p>
+                      <p className='flex gap-1 items-center'><img src="https://www.kfc.lk/images/icons/stamp.png" alt="" width={50} />Total</p><p>Rs: {getTotalCartAmount() + 15}.00</p>
                     </div>
                     <div className='flex justify-between border-t-2 border-b-2 p-3 bg-gray-50'>
                       <p>Review your order before checkout.</p>
@@ -74,16 +75,48 @@ const PlaceOrder = ({ placeOrderOpen, setplaceOrderclose, handlecouponOpen }) =>
                   <hr className='w-full' />
                 </div>
 
-                <FormGroup className='mt-5'>
+                <FormGroup>
+
+                  {
+                    step == 1 &&
+                    <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
+                      <p>Select Payment Method</p>
+                      <div className='flex gap-4'>
+                        <FormLabel className='bg-gray-200 hover:bg-gray-300 w-24 h-24 flex items-center justify-center'><Radio style={{ display: 'none' }} checked={paymentMethod == 'online'} onClick={() => setPaymentMethod('online')} /><Payment /></FormLabel>
+                        <FormLabel className='bg-gray-200 hover:bg-gray-300 w-24 h-24 flex items-center justify-center'><Radio style={{ display: 'none' }} checked={paymentMethod == 'cod'} onClick={() => setPaymentMethod('cod')} /><Handshake /></FormLabel>
+                        <FormLabel className='bg-gray-200 hover:bg-gray-300 w-24 h-24 flex items-center justify-center'><Radio style={{ display: 'none' }} checked={paymentMethod == 'visitShop'} onClick={() => setPaymentMethod('visitShop')} /><Restaurant /></FormLabel>
+                      </div>
+                      <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={setStep(2)}>Next</button>
+                    </div>
+                  }
+
+                  {
+                    <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
+                      <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
+                        <p className='text-xl font-semibold text-gray-300'>Account Details</p>
+                        <div className='flex flex-col gap-5 px-10 my-3 w-full'>
+                          <input type="text" placeholder='User name' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                          <input type="email" placeholder='Email' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                          <input type="tel" placeholder='mobile' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                          <input type="text" placeholder='Address' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                      </div>
+                    </div>
+                    <div className='flex gap-5 justify-center'>
+                            <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'>Back</button>
+                            <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'>Save</button></div>
+                        </div>
+                  }
+
                   <div className='grid md:grid-cols-2 grid-cols-1 gap-5 mx-5'>
-                    <TextField id="outlined-basic" label="First Name" variant="outlined" />
-                    <TextField id="outlined-basic" label="Last Name" variant="outlined" />
-                    <TextField id="outlined-basic" label="Email" variant="outlined" type="email" />
-                    <TextField id="outlined-basic" label="Mobile" variant="outlined" type="number" />
-                    <TextField id="outlined-basic" label="City" variant="outlined" />
-                    <TextField id="outlined-basic" label="Address" variant="outlined" />
-                    <TextField id="outlined-basic" label="description" variant="outlined" className='col-span-2' />
-                    <FormControlLabel size="small" control={<Checkbox defaultChecked />} label="You Enter Details Is COrrected  ?" />
+
+                    {/* <TextField id="outlined-basic" label="First Name" variant="outlined" /> */}
+                    {/* <TextField id="outlined-basic" label="Last Name" variant="outlined" /> */}
+                    {/* <TextField id="outlined-basic" label="Email" variant="outlined" type="email" /> */}
+                    {/* <TextField id="outlined-basic" label="Mobile" variant="outlined" type="number" /> */}
+                    {/* <TextField id="outlined-basic" label="City" variant="outlined" /> */}
+                    {/* <TextField id="outlined-basic" label="Address" variant="outlined" /> */}
+                    {/* <TextField id="outlined-basic" label="description" variant="outlined" className='col-span-2' /> */}
+                    {/* <FormControlLabel size="small" control={<Checkbox defaultChecked />} label="You Enter Details Is COrrected  ?" /> */}
                   </div>
                 </FormGroup>
 
@@ -100,67 +133,3 @@ const PlaceOrder = ({ placeOrderOpen, setplaceOrderclose, handlecouponOpen }) =>
 }
 
 export default PlaceOrder
-
-
-
-// import React, { useContext } from 'react'
-// import './PlaceOrder.css'
-// import { StoreContext } from '../../context/StoreContext'
-
-// const PlaceOrder = () => {
-//   const {getTotlCartAmmount} = useContext(StoreContext);
-//   return (
-//     <div>
-//       <form action="" className='place-order'>
-//         <div className="place-order-left">
-//           <p className='title'>Delivary informatioon</p>
-//           <div className="mult-fields">
-//             <input type="text" placeholder='First Name' />
-//             <input type="text" placeholder='Last Name' />
-//           </div>
-//           <input type="email" placeholder='Email Address' />
-//           <input type="text" placeholder='Street' />
-//           <div className="mult-fields">
-//             <input type="text" placeholder='Cist' />
-//             <input type="text" placeholder='State' />
-//           </div>
-//           <div className="mult-fields">
-//             <input type="text" placeholder='Zip Code' />
-//             <input type="text" placeholder='Country' />
-//           </div>
-//           <input type="text" placeholder='Phone' />
-//         </div>
-//         <div className="place-order-right">
-//         <div className="cart-total">
-//           <h2>Cart Totals</h2>
-//           <div>
-
-//             <div className="cart-total-details">
-//               <p>Sub Total</p>
-//               <p>${getTotlCartAmmount()}</p>
-//             </div>
-
-//             <hr />
-
-//             <div className="cart-total-details">
-//               <p>Delivary Free</p>
-//               <p>{getTotlCartAmmount()==0?0:2}</p>
-//             </div>
-
-//             <hr />
-
-//             <div className="cart-total-details">
-//               <b>Total</b>
-//               <b>${getTotlCartAmmount()==0?0:getTotlCartAmmount()+2}</b>
-//             </div>
-
-//           </div>
-//           <button onClick={()=>navigate('/order')}>PROEED TO PAYMENT</button>
-//         </div>
-//         </div>
-//       </form>
-//     </div>
-//   )
-// }
-
-// export default PlaceOrder

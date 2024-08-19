@@ -15,14 +15,14 @@ const style = {
 
 const Reviews = ({ couponOpen, handlecouponClose }) => {
 
-    const { reviewsOpen, id, handlereviewsClose, food_list } = useContext(StoreContext);
+    const { reviewsOpen, id, handleReviewsClose, food_list } = useContext(StoreContext);
     const [itemStar, setitemStar] = useState(0);
 
     return (
         <div>
             <Modal
                 open={reviewsOpen}
-                onClose={handlereviewsClose}
+                onClose={handleReviewsClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

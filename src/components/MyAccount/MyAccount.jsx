@@ -6,7 +6,7 @@ import { StoreContext } from '../../context/StoreContext'
 const MyAccount = ({ isOpen, setIsOpen }) => {
 
     const { token, updateToken } = useContext(StoreContext);
-    const [activeNav, setactiveNav] = useState('account')
+    const [activeNav, setActiveNav] = useState('account')
 
     return (
         <div>
@@ -18,17 +18,17 @@ const MyAccount = ({ isOpen, setIsOpen }) => {
                     <div className='grid grid-cols-3 mt-2 '>
                         <button
                             className={`m-2 text-white rounded-full py-1 px-3 ${activeNav == 'account' ? 'bg-red-500 hover:bg-red-400' : 'bg-gray-500 hover:bg-gray-300'}`}
-                            onClick={() => setactiveNav('account')}>
+                            onClick={() => setActiveNav('account')}>
                             Account
                         </button>
                         <button
                             className={`m-2 text-white rounded-full py-1 px-3 ${activeNav == 'history' ? 'bg-red-500 hover:bg-red-400' : 'bg-gray-400 hover:bg-gray-300'}`}
-                            onClick={() => setactiveNav('history')}>
+                            onClick={() => setActiveNav('history')}>
                             Order
                         </button>
                         <button
                             className={`m-2 text-white rounded-full py-1 px-3 ${activeNav == 'logout' ? 'bg-red-500 hover:bg-red-400' : 'bg-gray-400 hover:bg-gray-300'}`}
-                            onClick={() => setactiveNav('logout')}>
+                            onClick={() => setActiveNav('logout')}>
                             Logout
                         </button>
                     </div>
@@ -49,7 +49,7 @@ const MyAccount = ({ isOpen, setIsOpen }) => {
                     {activeNav == "history" &&
                         <div>
                             <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
-                                <p className='text-xl font-semibold text-gray-300'>Previous Orderss</p>
+                                <p className='text-xl font-semibold text-gray-300'>Previous Orders</p>
                                 <div>
                                     <p>No Orders</p>
                                 </div>

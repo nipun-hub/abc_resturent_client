@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Moped, Search } from '@mui/icons-material';
 import './Header.css'
 import { assets } from '../../assets/assets'
+import { Carousel } from "@material-tailwind/react";
 
 const Header = () => {
 
@@ -25,14 +26,14 @@ const Header = () => {
 
   // slider end
 
-  const [searchType, setsearchType] = useState('delivary');
-  const [open, setopen] = useState(false);
+  const [searchType, setSearchType] = useState('delivery');
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex flex-col justify-center items-center static h-screen">
 
-      {/* carosal ariya  */}
-      <div className="w-full h-1/2  relative overflow-hidden rounded-lg">
+      {/* carousal aria  */}
+      {/* <div className="w-full h-1/2  relative overflow-hidden rounded-lg">
         {images.map((image, index) => (
           <img
             key={index}
@@ -42,7 +43,18 @@ const Header = () => {
               }`}
           />
         ))}
-      </div>
+      </div> */}
+
+      <Carousel loop={true} autoplay={true} className="w-full h-1/2 rounded-xl">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            alt="Carousel Image"
+            className="h-full w-full object-cover object-center"
+          />
+        ))}
+      </Carousel>
 
       <div className='w-full h-1/2  relative overflow-hidden rounded-lg'>
         <div className='h-full w-full flex flex-col justify-center items-center'>
@@ -66,18 +78,18 @@ const Header = () => {
               <div className='grid grid-rows-2 md:grid-rows-1 grid-flow-col md:grid-flow-col-2 gap-4 '>
                 <div className='flex gap-2 justify-center items-center'>
                   <div
-                    className={`h-24 w-auto min-w-32  p-1 flex justify-center items-center flex-col  rounded-lg border-2 border-gray-300 ${searchType == 'delivary' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
-                    onClick={() => setsearchType('delivary')}
+                    className={`h-24 w-auto min-w-32  p-1 flex justify-center items-center flex-col  rounded-lg border-2 border-gray-300 ${searchType == 'delivery' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
+                    onClick={() => setSearchType('delivery')}
                   >
                     <img src="https://www.kfc.lk/images/icons/scooter.svg"
-                      style={{ filter: `invert(1) ${searchType == 'delivary' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
+                      style={{ filter: `invert(1) ${searchType == 'delivery' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
                       width={50}
                     />
                     <p>Delivery</p>
                   </div>
                   <div
                     className={`h-24 w-auto min-w-32 p-1 flex justify-center items-center flex-col rounded-lg border-2 border-gray-300 ${searchType == 'pickup' ? 'bg-red-700 text-white border-none' : 'text-gray-400 hover:bg-gray-100'}`}
-                    onClick={() => setsearchType('pickup')}
+                    onClick={() => setSearchType('pickup')}
                   >
                     <img src="https://www.kfc.lk/images/icons/food.svg"
                       style={{ filter: `invert(1) ${searchType == 'pickup' ? 'brightness(1)' : 'brightness(0)'} saturate(100%)` }}
@@ -87,7 +99,7 @@ const Header = () => {
                   </div>
                 </div>
                 <div className='col-span-2 grid grid-rows-2 grid-flow-col gap-3'>
-                  <p className='bg-gray-200 px-3 py-2 w-96 rounded'>Enter Your Delivary Location</p>
+                  <p className='bg-gray-200 px-3 py-2 w-96 rounded'>Enter Your Delivery Location</p>
                   <button className='bg-red-800 rounded text-white hover:bg-red-700'><Search /> Search</button>
                 </div>
               </div>

@@ -11,12 +11,12 @@ const style = {
     bgcolor: 'background.paper',
 };
 
-const Coupon = ({ couponOpen, handlecouponClose }) => {
+const Coupon = ({ Open, Close }) => {
     return (
         <div>
             <Modal
-                open={couponOpen}
-                onClose={handlecouponClose}
+                open={Open}
+                onClose={Close}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -24,7 +24,7 @@ const Coupon = ({ couponOpen, handlecouponClose }) => {
                     <div className='p-10 flex flex-col gap-3'>
                         <p>Enter your coupon code here.</p>
                         <TextField id="outlined-basic" label="coupon code" variant="outlined" />
-                        <button className='bg-red-800 rounded text-white hover:bg-red-700 p-3' onClick={handlecouponClose}>Place Order</button>
+                        <button className='bg-red-800 rounded text-white hover:bg-red-700 p-3' onClick={Close}>Place Order</button>
                     </div>
                 </Box>
             </Modal>

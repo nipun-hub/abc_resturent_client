@@ -6,7 +6,7 @@ import { Alert } from '@mui/material';
 
 const FoodItem = ({ id, name, price, description, image }) => {
 
-  const { cartItem, addToCart, removeFromCart, handlereviewsOpen } = useContext(StoreContext);
+  const { cartItem, addToCart, removeFromCart, handleReviewsOpen } = useContext(StoreContext);
 
   return (
     <div className='food-item duration-150 hover:scale-105 before:scale-105 drop-shadow-2xl'>
@@ -25,7 +25,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
       <div className="food-item-info">
         <div className="food-item-name-rating">
           <p>{name}</p>
-          <img src={assets.rating_starts} alt="" onClick={() => handlereviewsOpen(id)} />
+          <img src={assets.rating_starts} alt="" onClick={() => handleReviewsOpen(id)} />
         </div>
         <p className='food-item-description'>{description}</p>
         <div className='flex gap-5 items-center'>

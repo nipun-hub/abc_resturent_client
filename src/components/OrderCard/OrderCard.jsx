@@ -10,9 +10,8 @@ const OrderCard = () => {
             </div>
             <div className='w-full h-96 grid grid-rows-4'>
                 <p className='text-yellow-500'>KFC CHICKEN IS 100% LOCALLY SOURCED FROM OUR VERY OWN POULTRY FARMERS</p>
-                <p className='text-2xl font-normal'>Hand-Breaded, Freshly Prepared & Finger Lickin' Good!</p>
+                <p className='text-2xl font-normal'>Hand-Breaded, Freshly Prepared & Finger Licking' Good!</p>
                 <p className='text-2xl text-red-700 '>A Taste You Can Trust!</p>
-                {/* <Button className='' >Hello</Button> */}
                 <button className='bg-red-800 rounded text-white hover:bg-red-700 h-14 w-fit px-5 text-xl'>Order Now</button>
             </div>
             <div className='w-full h-96 flex justify-end'>

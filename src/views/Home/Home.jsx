@@ -11,9 +11,6 @@ const Home = () => {
     <div>
       <Header />
       <SpecialFood limit={6} />
-      {/* <ExploreMenu category={category} setcategory={setcategory}/> */}
-      {/* <FoodDisplay category={category}/> */}
-      {/* <AppDownloader/> */}
       <OrderCard />
     </div>
   )

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from './layout/navbar/NavBar';
-import Footer from './layout/Footer/Footer';
 import LoginPopup from './components/LoginPopup/LoginPopup';
 import Footer2 from './layout/Footer2/Footer';
 import Cart from './components/Cart/Cart';
@@ -11,48 +10,83 @@ import Coupon from './components/Coupon/Coupon';
 import Reviews from './components/Reviews/Reviews';
 import { StoreContext } from './context/StoreContext';
 import MyAccount from './components/MyAccount/MyAccount';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
-
   const { reviewsOpen, token } = useContext(StoreContext);
 
   const [showLogin, setShowLogin] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [cartIsOpen, setCartIsOpen] = React.useState(false);
+  const [checkoutOpen, setCheckoutOpen] = React.useState(false);
+  const [placeOrderOpen, setPlaceOrderOpen] = React.useState(false);
+  const [couponOpen, setCouponOpen] = React.useState(false);
+  const [isMyAccountOpen, setMyAccountOpen] = React.useState(false);
 
-  const [checkoutOpen, setcheckoutOpen] = React.useState(false);
-  const handlecheckoutOpen = () => setcheckoutOpen(true);
-  const handlecheckoutClose = () => setcheckoutOpen(false);
+  const handleLoginOpen = () => setShowLogin(true);
+  const handleLoginClose = () => setShowLogin(false);
 
-  const [placeOrderOpen, setplaceOrderOpen] = React.useState(false);
-  const handleplaceOrderOpen = () => setplaceOrderOpen(true);
-  const handleplaceOrderClose = () => setplaceOrderOpen(false);
+  const handleCheckoutOpen = () => setCheckoutOpen(true);
+  const handleCheckoutClose = () => setCheckoutOpen(false);
 
-  const [couponOpen, setcouponOpen] = React.useState(false);
-  const handlecouponOpen = () => setcouponOpen(true);
-  const handlecouponClose = () => setcouponOpen(false);
+  const handlePlaceOrderOpen = () => setPlaceOrderOpen(true);
+  const handlePlaceOrderClose = () => setPlaceOrderOpen(false);
 
-  const [isMyAccountOpen, setisMyAccountOpen] = React.useState(false);
+  const handleCouponOpen = () => setCouponOpen(true);
+  const handleCouponClose = () => setCouponOpen(false);
+
 
   useEffect(() => {
-    setisMyAccountOpen(false)
+    setMyAccountOpen(false)
   }, [token])
 
 
   return (
     <>
-      {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
+      {<LoginPopup open={showLogin} close={handleLoginClose} />}
       <div className='app'>
-        <NavBar setShowLogin={setShowLogin} setIsOpen={setIsOpen} setcheckoutOpen={setcheckoutOpen} setisOpenMyAccount={setisMyAccountOpen} />
+        <NavBar
+          setShowLogin={handleLoginOpen}
+          setCartIsOpen={setCartIsOpen}
+          setCheckoutOpen={setCheckoutOpen}
+          setMyAccountOpen={setMyAccountOpen}
+        />
         <Outlet />
-
       </div>
-      {/* <Footer /> */}
-      <Cart isOpen={isOpen} setIsOpen={setIsOpen} setcheckoutOpen={handlecheckoutOpen} />
-      <Checkout checkoutOpen={checkoutOpen} setcheckoutClose={handlecheckoutClose} setplaceOrderOpen={handleplaceOrderOpen} setcouponOpen={setcouponOpen} />
-      <PlaceOrder placeOrderOpen={placeOrderOpen} setplaceOrderclose={handleplaceOrderClose} handlecouponOpen={handlecouponOpen} />
-      <Coupon couponOpen={couponOpen} handlecouponClose={handlecouponClose} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          className: '',
+          style: {
+            zIndex: 99999, // Set your desired z-index value
+          },
+        }}
+        containerStyle={{
+          zIndex: 99999, // This affects the entire toast container
+        }}
+
+      />
+      <Cart
+        cartIsOpen={cartIsOpen}
+        setCartIsOpen={setCartIsOpen}
+        setCheckoutOpen={handleCheckoutOpen}
+      />
+      <Checkout
+        checkoutOpen={checkoutOpen}
+        setCheckoutClose={handleCheckoutClose}
+        setPlaceOrderOpen={handlePlaceOrderOpen}
+      />
+      <PlaceOrder
+        Open={placeOrderOpen}
+        Close={handlePlaceOrderClose}
+        handleCouponOpen={handleCouponOpen}
+      />
+      <Coupon
+        Open={couponOpen}
+        Close={handleCouponClose}
+      />
       {reviewsOpen && <Reviews />}
-      {token.token && <MyAccount isOpen={isMyAccountOpen} setIsOpen={setisMyAccountOpen} />}
+      {token.token && <MyAccount isOpen={isMyAccountOpen} setIsOpen={setMyAccountOpen} />}
       <Footer2 />
     </>
   );

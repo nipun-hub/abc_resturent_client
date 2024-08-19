@@ -12,7 +12,7 @@
     width: 150px;
 }
 
-.naubar-menu{
+.navbar-menu{
     display:  flex;
     list-style: none;
     gap: 20px;
@@ -69,7 +69,7 @@
         width: 140px;
     }
 
-    .naubar-menu{
+    .navbar-menu{
         gap: 20px;
         font-size: 17px;
     }
@@ -92,7 +92,7 @@
         width: 120px;
     }
 
-    .naubar-menu{
+    .navBar-menu{
         gap: 15px;
         font-size: 16px;
     }
@@ -113,7 +113,7 @@
 
 @media (max-width:750px){
 
-    .naubar-menu{
+    .navBar-menu{
         display: none;
     }
 }

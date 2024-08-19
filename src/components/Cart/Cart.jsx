@@ -1,15 +1,14 @@
 import React, { useContext } from 'react'
 import Drawer from '../Drawer/Drawer';
 import { StoreContext } from '../../context/StoreContext';
-import { AddCircleOutline, Delete, DeleteForever, DeleteOutline, ProductionQuantityLimits, RemoveCircleOutline, ShoppingCart } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { AddCircleOutline, DeleteForever, ProductionQuantityLimits, RemoveCircleOutline, ShoppingCart } from '@mui/icons-material';
 
-const Cart = ({ isOpen, setIsOpen, setcheckoutOpen }) => {
+const Cart = ({ cartIsOpen, setCartIsOpen, setCheckoutOpen }) => {
 
-    const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotlCartAmmount } = useContext(StoreContext);
+    const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
     return (
         <div>
-            <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
+            <Drawer isOpen={cartIsOpen} setIsOpen={setCartIsOpen}>
                 <div className='mt-10 mx-8 flex flex-col h-full'>
                     <div className='h-5/6 w-full flex flex-col'>
                         <h2 className='text-2xl text-center'><ShoppingCart /> Your Cart</h2>
@@ -57,12 +56,12 @@ const Cart = ({ isOpen, setIsOpen, setcheckoutOpen }) => {
                         <div className='text-right text-sm text-gray-400 grid gap-1'>
                             <p>Delivery Charge : Rs. 3500.00</p>
                             <p>Packing Charge : Rs. 100.00</p>
-                            <p className='text-green-400'>Totle Charge : Rs. {getTotlCartAmmount()}.00</p>
+                            <p className='text-green-400'>Total Charge : Rs. {getTotalCartAmount()}.00</p>
                         </div>
                         <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'
                             onClick={() => {
-                                setIsOpen(false)
-                                setcheckoutOpen()
+                                setCartIsOpen(false)
+                                setCheckoutOpen()
                             }}>
                             <span>Checkout</span>
                         </button>

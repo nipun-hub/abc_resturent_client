@@ -8,8 +8,8 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
 
     const [token, setToken] = useState({
-        token: 'dfghdfhdfhfdshsdhdfhfghdfrh',
-        name: 'Nipun Theekshna',
+        token: '',
+        name: '',
     });
 
     const updateToken = (target, value) => {
@@ -19,58 +19,58 @@ const StoreContextProvider = (props) => {
     }));
 }
 
-    const [cartItem, setcartItem] = useState({});
+    const [cartItem, setCartItem] = useState({});
 
     const addToCart = (itemId) => {
         if (!cartItem[itemId]) {
-            setcartItem((prev) => ({ ...prev, [itemId]: 1 }))
+            setCartItem((prev) => ({ ...prev, [itemId]: 1 }))
         } else {
-            setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }))
+            setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }))
         }
     }
 
     const removeFromCart = (itemId) => {
-        setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
+        setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
     }
 
     const deleteFromCart = (itemId) => {
-        setcartItem((prev) => ({ ...prev, [itemId]: 0 }))
+        setCartItem((prev) => ({ ...prev, [itemId]: 0 }))
     }
 
-    const getTotlCartAmmount = () => {
-        let totalAmmounnt = 0;
+    const getTotalCartAmount = () => {
+        let totalAmount = 0;
         for (const item in cartItem) {
             if (cartItem[item] > 0) {
-                let itemIfor = food_list.find((product) => product._id === item);
-                totalAmmounnt += itemIfor.price * cartItem[item];
+                let itemInfo = food_list.find((product) => product._id === item);
+                totalAmount += itemInfo.price * cartItem[item];
             }
         }
-        return totalAmmounnt;
+        return totalAmount;
     }
 
-    // set review secrion
-    const [reviewsOpen, setreviewsOpen] = useState(false);
-    const [id, setid] = useState();
-    const handlereviewsOpen = (id) => {
-        setid(id);
-        setreviewsOpen(true);
+    // set review session
+    const [reviewsOpen, setReviewsOpen] = useState(false);
+    const [id, setId] = useState();
+    const handleReviewsOpen = (id) => {
+        setId(id);
+        setReviewsOpen(true);
     }
-    const handlereviewsClose = () => setreviewsOpen(false);
+    const handleReviewsClose = () => setReviewsOpen(false);
 
     const contextValue = {
         token,
         updateToken,
         food_list,
         cartItem,
-        setcartItem,
+        setCartItem,
         addToCart,
         deleteFromCart,
         removeFromCart,
-        getTotlCartAmmount,
+        getTotalCartAmount,
         reviewsOpen,
         id,
-        handlereviewsOpen,
-        handlereviewsClose,
+        handleReviewsOpen,
+        handleReviewsClose,
     }
 
 

@@ -8,6 +8,8 @@ import Service from '../views/Service/Service';
 import Checkout from '../views/Checkout/Checkout';
 import PlaceOrder from '../views/PlaceOrder/PlaceOrder';
 import ContactUs from '../views/ContactUs/ContactUs';
+import Gallery from '../views/Gallery/Gallery';
+import Facilities from '../views/Facilities/Facilities';
 
 const router = createBrowserRouter([
     {
@@ -31,9 +33,17 @@ const router = createBrowserRouter([
                 element: <ContactUs />,
             },
             {
-                path: '/order',
-                element: <PlaceOrder />,
+                path: '/gallery',
+                element: <Gallery />,
             },
+            {
+                path: '/facilities',
+                element: <Facilities />,
+            },
+            // {
+            // path: '/order',
+            // element: <PlaceOrder />,
+            // },
         ],
     },
 ]);
