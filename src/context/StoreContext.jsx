@@ -1,6 +1,6 @@
 
-import { createContext, useEffect, useState } from "react"
-import { food_list } from "../assets/assets";
+import { createContext, useState } from "react"
+import { food_list } from "../assets/web/images/assets";
 
 
 export const StoreContext = createContext(null);
@@ -13,11 +13,11 @@ const StoreContextProvider = (props) => {
     });
 
     const updateToken = (target, value) => {
-    setToken(prevToken => ({
-        ...prevToken,
-        [target]: value,
-    }));
-}
+        setToken(prevToken => ({
+            ...prevToken,
+            [target]: value,
+        }));
+    }
 
     const [cartItem, setCartItem] = useState({});
 
