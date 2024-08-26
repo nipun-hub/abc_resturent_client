@@ -7,16 +7,17 @@ import { adminRouterList } from './AdminRouterList';
 const AdminRoutes = () => {
   return (
     <>
-      <AdminLayout />
-      <Routes>
-        {
-          adminRouterList.map((obj, i) => {
-            return (
-              <Route key={i} path={obj.path} Component={obj.Component} />
-            )
-          })
-        }
-      </Routes>
+      <AdminLayout>
+        <Routes>
+          {
+            adminRouterList.map((obj, i) => {
+              return (
+                <Route key={i} path={obj.path} Component={obj.Component} />
+              )
+            })
+          }
+        </Routes>
+      </AdminLayout>
     </>
   );
 };
