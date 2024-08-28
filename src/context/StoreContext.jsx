@@ -7,16 +7,31 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
-    const [token, setToken] = useState({
-        token: '',
-        name: '',
-    });
+    const [token, setToken] = useState(JSON.parse(localStorage.getItem('user')))
 
-    const updateToken = (target, value) => {
-        setToken(prevToken => ({
-            ...prevToken,
-            [target]: value,
-        }));
+    // const [token, setToken] = useState({
+    //     token: '',
+    //     name: '',
+    //     role: '',
+    // });
+
+    // const updateToken = (target, value) => {
+    //     setToken(prevToken => ({
+    //         ...prevToken,
+    //         [target]: value,
+    //     }));
+    // }
+
+    const refreshToken = () => {
+        setToken(JSON.parse(localStorage.getItem('user')))
+    }
+
+    const resetToken = () => {
+        console.log("reset")
+        console.log(token)
+        localStorage.removeItem('user');
+        refreshToken()
+        // setToken([])
     }
 
     const [cartItem, setCartItem] = useState({});
@@ -59,7 +74,8 @@ const StoreContextProvider = (props) => {
 
     const contextValue = {
         token,
-        updateToken,
+        resetToken,
+        refreshToken,
         food_list,
         cartItem,
         setCartItem,

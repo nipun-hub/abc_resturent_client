@@ -27,7 +27,7 @@ const navBar = ({ setShowLogin, setCartIsOpen, setMyAccountOpen }) => {
           <div className={getTotalCartAmount() === 0 ? null : "dot"}></div>
         </div>
         {
-          token.token
+          token
             ? <button className='bg-red-800 text-white hover:bg-red-700 rounded-full py-2 px-4' onClick={() => { setMyAccountOpen(true) }}><Person /> My Account</button>
             : <button className='bg-red-800 text-white hover:bg-red-700 rounded-full py-2 px-4' onClick={() => { setShowLogin(true) }}>sign in</button>
         }

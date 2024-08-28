@@ -40,7 +40,7 @@ const SideBar = () => {
                             SideBarList.map((item, index) => (
                                 item.children
                                     ?
-                                    <SubMenu data={item} />
+                                    <SubMenu key={index} data={item} />
                                     :
                                     <li key={index}>
                                         <NavLink to={item.path} className={`link ${pathname == item.path && "text-red-400"}`}>

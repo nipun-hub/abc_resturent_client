@@ -2,10 +2,13 @@ import React, { useContext, useState } from 'react'
 import { Close, Person } from '@mui/icons-material'
 import Drawer from '../../Common/Drawer/Drawer'
 import { StoreContext } from '../../../context/StoreContext';
+import ConformDelete from './ConformDelete';
+import toast from 'react-hot-toast';
 
 const MyAccount = ({ isOpen, setIsOpen }) => {
 
-    const { token, updateToken } = useContext(StoreContext);
+    const { token, resetToken } = useContext(StoreContext);
+    console.log(token)
     const [activeNav, setActiveNav] = useState('account')
 
     return (
@@ -57,9 +60,11 @@ const MyAccount = ({ isOpen, setIsOpen }) => {
                         </div>
                     }
 
-                    {activeNav == "logout" &&
-                        updateToken('token', '')
+                    {activeNav == "logout" && <ConformDelete conformFunction={() => {
+                        resetToken()
+                        toast.success('Successfully log out.')
                     }
+                    } />}
                 </div>
             </Drawer>
         </div>

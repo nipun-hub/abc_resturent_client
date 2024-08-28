@@ -3,6 +3,7 @@ import { Button, Dialog, Card, CardBody, CardFooter, Typography, Input, Checkbox
 import toast from "react-hot-toast";
 import axios from "axios";
 import { StoreContext } from "../../../context/StoreContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const notify = (message, type) => {
     type == 'success' && toast.success(message);
@@ -20,8 +21,9 @@ const passwordValidate = (password) => {
 
 
 const LoginPopup = ({ open, close }) => {
+    const navigate = useNavigate();
     const [currentState, setCurrentState] = useState('Sign In');
-    const { updateToken } = useContext(StoreContext)
+    const { refreshToken } = useContext(StoreContext)
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -67,10 +69,15 @@ const LoginPopup = ({ open, close }) => {
                 password: formData.password,
             })
                 .then(response => {
-                    console.log(response.data.formData)
+                    console.log(response.data)
+                    const userToken = { token: response.data.id, authorization: response.headers.authorization, name: response.data.fullName, role: response.data.role };
+                    localStorage.setItem('user', JSON.stringify(userToken));
+                    refreshToken()
                     notify(`Welcome ${response.data.fullName}.`, 'success');
-                    updateToken('token', response.data.id);
-                    updateToken('token', response.data.id);
+                    if (response.data.role === "STAFF") {
+                        navigate('/admin')
+                        return <Navigate to="/admin" replace />;
+                    }
                     close();
                 })
                 .catch((error) => {
@@ -92,7 +99,7 @@ const LoginPopup = ({ open, close }) => {
                 <Card className="mx-auto w-full max-w-[24rem]">
                     <form onSubmit={handleSubmit} autoComplete="on">
                         <CardBody className="flex flex-col gap-4">
-                            <Typography variant="h4" color="blue-gray" onClick={() => notify('sfrasdfgasdg', 'error')}>
+                            <Typography variant="h4" color="blue-gray" >
                                 {currentState}
                             </Typography>
                             <Typography

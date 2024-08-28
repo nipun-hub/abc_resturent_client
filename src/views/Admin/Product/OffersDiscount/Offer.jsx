@@ -1,68 +1,58 @@
-import * as React from 'react';
-import { AddRounded, AdjustRounded, ArrowRightAltRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from "@mui/icons-material";
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import CategoryHead from './CategoryHead';
-import Add from './Alert/Add';
-import Delete from './Alert/Delete';
-import View from './Alert/View';
+import { AdjustRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from '@mui/icons-material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import React, { useEffect } from 'react'
+import AddOffers from './Alert/AddOffers'
+import Delete from './Alert/Delete'
+import View from './Alert/View'
 
-const columns = ["Name", "Description", 'Price', 'Category', 'Status', 'Action'];
+const columns = ["Name", "Description", 'Price', 'Ending', 'Status', 'Action'];
 
 const dataList = [
     {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa1",
-        itemName: "awwwww",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
+        id: "a723b965-5a79-49ec-9b86-66086ab2523f",
+        offerName: "offer 1",
+        description: "50% off on select items",
+        offerUnitPrice: 150.0,
+        imageUrl: "http://localhost:8080/api/uploads/760aba29-b28a-4c6f-8319-53738945a19d_01.jpeg",
         status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
-    }, {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa2",
-        itemName: "ffffff",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-        status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
-    },
-    {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa3",
-        itemName: "aaaaaa",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-        status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
+        startDate: "2024-08-22",
+        endDate: "2024-08-31",
+        items: [
+            {
+                id: "49bbc540-3eb0-479e-980d-d3a8711d6fa1",
+                itemName: "item 1",
+                description: "This is a sample description for the item. It should be between 5 and 200 characters.",
+                rate: 0,
+                unitPrice: 200.0,
+                discountPercentage: 5.0,
+                imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
+                status: "ACTIVE",
+                category: {
+                    id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
+                    categoryName: "Hot",
+                    status: "ACTIVE"
+                }
+            },
+            {
+                id: "49bbc540-3eb0-479e-980d-d3a8711d6fa2",
+                itemName: "item 2",
+                description: "This is a sample description for the item. It should be between 5 and 200 characters.",
+                rate: 0,
+                unitPrice: 200.0,
+                discountPercentage: 5.0,
+                imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
+                status: "ACTIVE",
+                category: {
+                    id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
+                    categoryName: "Hot",
+                    status: "ACTIVE"
+                }
+            }
+        ]
     }
 ];
 
-export default function Category() {
+const Offer = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -75,36 +65,43 @@ export default function Category() {
         setPage(0);
     };
 
-    const [selectedCategoryData, setSelectedCategoryData] = React.useState([]);
-    const [addCategoryOpen, setAddCategoryOpen] = React.useState(false);
+    const type = 'offer';
+
+    const [selectedData, setSelectedData] = React.useState([]);
+    const [addOpen, setAddOpen] = React.useState(false);
     const [deleteOpen, serDeleteOpen] = React.useState(false);
     const [updateOpen, serUpdateOpen] = React.useState(false);
     const [viewOpen, serViewOpen] = React.useState(false);
 
-    const closeAddCategoryAlert = () => { setAddCategoryOpen(false) }
+    const closeAddAlert = () => { setAddOpen(false) }
     const closeDeleteAlert = () => { serDeleteOpen(false) }
     const closeUpdateAlert = () => { serUpdateOpen(false) }
     const openDeleteAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedData(dataList.filter(item => item.id === id)[0])
         serDeleteOpen(true)
     }
     const openUpdateAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedData(dataList.filter(item => item.id === id)[0])
         serUpdateOpen(true);
     }
     const openViewAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedData(dataList.filter(item => item.id === id)[0])
         serViewOpen(true);
     }
 
+    // useEffect(() => {
+    //     setAddOpen(addAlertOpen)
+    // }, [addAlertOpen])
+
+    // useEffect(() => {
+    //     setAddOpenParent(addOpen)
+    // }, [addOpen])
+
     return (
         <>
-            {(addCategoryOpen || updateOpen) && <Add open={updateOpen ? updateOpen : addCategoryOpen} close={updateOpen ? closeUpdateAlert : closeAddCategoryAlert} data={updateOpen ? selectedCategoryData : null} />}
-            <Delete open={deleteOpen} close={closeDeleteAlert} data={selectedCategoryData} />
-            <View open={viewOpen} close={() => serViewOpen(false)} data={selectedCategoryData} />
-
-            <CategoryHead setOpen={() => setAddCategoryOpen(true)} />
-
+            {(addOpen || updateOpen) && <AddOffers type={type} open={updateOpen ? updateOpen : addOpen} close={updateOpen ? closeUpdateAlert : closeAddAlert} data={updateOpen ? selectedData : null} />}
+            <Delete type={type} open={deleteOpen} close={closeDeleteAlert} data={selectedData} />
+            <View type={type} open={viewOpen} close={() => serViewOpen(false)} data={selectedData} />
             <Paper sx={{ overflow: 'hidden' }} className='mt-10 max-w-full me-0.5'>
                 <TableContainer >
                     <Table stickyHeader aria-label="sticky table">
@@ -144,15 +141,16 @@ export default function Category() {
                             {dataList.map((row, rowId) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.itemName}</TableCell>
+                                        <TableCell className='border-s-2 border-gray-200 '>{row.offerName}</TableCell>
                                         <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.unitPrice}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            {[row.category].map((category, index) => (
-                                                <p key={index}>{category.categoryName}</p>
+                                        <TableCell className='border-s-2 border-gray-200 '>{row.offerUnitPrice}</TableCell>
+                                        {/* <TableCell className='border-s-2 border-gray-200 '>
+                                            {row.items.map((item, index) => (
+                                                <p key={index}>{item.categoryName}</p>
                                             ))
                                             }
-                                        </TableCell>
+                                        </TableCell> */}
+                                        <TableCell className='border-s-2 border-gray-200 '>{row.endDate}</TableCell>
                                         <TableCell className='border-s-2 border-gray-200 '>
                                             {
                                                 row.status == "ACTIVE"
@@ -190,5 +188,7 @@ export default function Category() {
                 />
             </Paper >
         </>
-    );
+    )
 }
+
+export default Offer

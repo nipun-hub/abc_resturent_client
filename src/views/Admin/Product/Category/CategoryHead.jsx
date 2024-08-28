@@ -19,7 +19,7 @@ const CategoryHead = ({ setOpen }) => {
                 </CardBody>
                 <CardFooter className="pt-0">
                     <a href="#" className="inline-block">
-                        <Button size="sm" variant="text" className="flex items-center gap-2 bg-gray-400" onClick={() => setOpen(true)}>
+                        <Button size="sm" variant="text" className="flex items-center gap-2 bg-gray-400" onClick={setOpen}>
                             Add item
                             <AddRounded />
                         </Button>

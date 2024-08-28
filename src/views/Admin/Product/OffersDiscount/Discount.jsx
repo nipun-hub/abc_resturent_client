@@ -1,17 +1,6 @@
-import * as React from 'react';
-import { AddRounded, AdjustRounded, ArrowRightAltRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from "@mui/icons-material";
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import CategoryHead from './CategoryHead';
-import Add from './Alert/Add';
-import Delete from './Alert/Delete';
-import View from './Alert/View';
+import { AdjustRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from '@mui/icons-material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import React, { useState } from 'react'
 
 const columns = ["Name", "Description", 'Price', 'Category', 'Status', 'Action'];
 
@@ -62,7 +51,7 @@ const dataList = [
     }
 ];
 
-export default function Category() {
+const Discount = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -75,36 +64,9 @@ export default function Category() {
         setPage(0);
     };
 
-    const [selectedCategoryData, setSelectedCategoryData] = React.useState([]);
-    const [addCategoryOpen, setAddCategoryOpen] = React.useState(false);
-    const [deleteOpen, serDeleteOpen] = React.useState(false);
-    const [updateOpen, serUpdateOpen] = React.useState(false);
-    const [viewOpen, serViewOpen] = React.useState(false);
-
-    const closeAddCategoryAlert = () => { setAddCategoryOpen(false) }
-    const closeDeleteAlert = () => { serDeleteOpen(false) }
-    const closeUpdateAlert = () => { serUpdateOpen(false) }
-    const openDeleteAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
-        serDeleteOpen(true)
-    }
-    const openUpdateAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
-        serUpdateOpen(true);
-    }
-    const openViewAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
-        serViewOpen(true);
-    }
-
+    const [selectedItem, setSelectedItem] = useState([])
     return (
         <>
-            {(addCategoryOpen || updateOpen) && <Add open={updateOpen ? updateOpen : addCategoryOpen} close={updateOpen ? closeUpdateAlert : closeAddCategoryAlert} data={updateOpen ? selectedCategoryData : null} />}
-            <Delete open={deleteOpen} close={closeDeleteAlert} data={selectedCategoryData} />
-            <View open={viewOpen} close={() => serViewOpen(false)} data={selectedCategoryData} />
-
-            <CategoryHead setOpen={() => setAddCategoryOpen(true)} />
-
             <Paper sx={{ overflow: 'hidden' }} className='mt-10 max-w-full me-0.5'>
                 <TableContainer >
                     <Table stickyHeader aria-label="sticky table">
@@ -190,5 +152,7 @@ export default function Category() {
                 />
             </Paper >
         </>
-    );
+    )
 }
+
+export default Discount

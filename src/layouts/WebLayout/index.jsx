@@ -83,7 +83,7 @@ const WebLayout = ({ children }) => {
                     Close={handleCouponClose}
                 />
                 {reviewsOpen && <Reviews />}
-                {token.token && <MyAccount isOpen={isMyAccountOpen} setIsOpen={setMyAccountOpen} />}
+                {token && <MyAccount isOpen={isMyAccountOpen} setIsOpen={setMyAccountOpen} />}
                 <Footer2 />
             </div>
         </>
