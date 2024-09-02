@@ -1,62 +1,26 @@
+import React, { useEffect, useState } from 'react'
 import { AdjustRounded, DeleteOutlineRounded } from '@mui/icons-material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import React, { useState } from 'react'
-
-const dataList = [
-    {
-        id: 'dkhzdfzsdifuasidchfsa7eftsidfuysdtcy',
-        fullName: "Hemal",
-        email: "john.guielse@example.com",
-        address: "Ayagama, Pimbura",
-        phone: "+123416574553",
-        userRole: "STAFF",
-        userStatus: "ACTIVE",
-    },
-    {
-        id: 'dkhzdfzsdifuasidchfsa7eftsidfuysdtcy',
-        fullName: "Ayagama",
-        email: "mama.guielse@example.com",
-        address: "Ayagama, Pimbura",
-        phone: "+123416574553",
-        userRole: "STAFF",
-        userStatus: "ACTIVE",
-    },
-    {
-        id: 'dkhzdfzsdifuasidchfsa7eftsidfuysdtcy',
-        fullName: "Ayagama",
-        email: "john.guielse@example.com",
-        address: "Ayagama, Pimbura",
-        phone: "+123416574553",
-        userRole: "STAFF",
-        userStatus: "ACTIVE",
-    },
-    {
-        id: 'dkhzdfzsdifuasidchfsa7eftsidfuysdtcy',
-        fullName: "Ayagama",
-        email: "john.guielse@example.com",
-        address: "Ayagama, Pimbura",
-        phone: "+123416574553",
-        userRole: "STAFF",
-        userStatus: "ACTIVE",
-    },
-    {
-        id: 'dkhzdfzsdifuasidchfsa7eftsidfuysdtcy',
-        fullName: "Ayagama",
-        email: "john.guielse@example.com",
-        address: "Ayagama, Pimbura",
-        phone: "+123416574553",
-        userRole: "STAFF",
-        userStatus: "ACTIVE",
-    },
-
-];
+import { getAllCustomers } from '../../../../services/admin/AdminService'
 
 const columns = ["Name", "Email", 'Address', 'Phone', 'Status'];
 
 const Customer = () => {
-
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [searchText, setSearchText] = useState();
+    const [dataList, setDataList] = useState([])
+
+    useEffect(() => {
+        getAllCustomers()
+            .then(response => {
+                // console.log(response.content)
+                setDataList(response.content)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    },)
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -67,7 +31,6 @@ const Customer = () => {
         setPage(0);
     };
 
-    const [searchText, setSearchText] = useState();
     return (
         <>
             <Paper sx={{ overflow: 'hidden' }} className=' max-w-full me-0.5'>
@@ -108,7 +71,7 @@ const Customer = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {dataList.filter(item => !searchText || (  item.fullName.includes(searchText) || item.email.includes(searchText)))
+                            {dataList.filter(item => !searchText || (item.fullName.includes(searchText) || item.email.includes(searchText)))
                                 .map((row, rowId) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>

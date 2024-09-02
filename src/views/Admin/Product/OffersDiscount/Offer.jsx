@@ -1,56 +1,13 @@
 import { AdjustRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from '@mui/icons-material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AddOffers from './Alert/AddOffers'
 import Delete from './Alert/Delete'
 import View from './Alert/View'
+import { StoreContext } from '../../../../context/StoreContext';
+import { getAllOffers } from '../../../../services/Common/CommonService';
 
 const columns = ["Name", "Description", 'Price', 'Ending', 'Status', 'Action'];
-
-const dataList = [
-    {
-        id: "a723b965-5a79-49ec-9b86-66086ab2523f",
-        offerName: "offer 1",
-        description: "50% off on select items",
-        offerUnitPrice: 150.0,
-        imageUrl: "http://localhost:8080/api/uploads/760aba29-b28a-4c6f-8319-53738945a19d_01.jpeg",
-        status: "ACTIVE",
-        startDate: "2024-08-22",
-        endDate: "2024-08-31",
-        items: [
-            {
-                id: "49bbc540-3eb0-479e-980d-d3a8711d6fa1",
-                itemName: "item 1",
-                description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-                rate: 0,
-                unitPrice: 200.0,
-                discountPercentage: 5.0,
-                imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-                status: "ACTIVE",
-                category: {
-                    id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-                    categoryName: "Hot",
-                    status: "ACTIVE"
-                }
-            },
-            {
-                id: "49bbc540-3eb0-479e-980d-d3a8711d6fa2",
-                itemName: "item 2",
-                description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-                rate: 0,
-                unitPrice: 200.0,
-                discountPercentage: 5.0,
-                imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-                status: "ACTIVE",
-                category: {
-                    id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-                    categoryName: "Hot",
-                    status: "ACTIVE"
-                }
-            }
-        ]
-    }
-];
 
 const Offer = () => {
     const [page, setPage] = React.useState(0);
@@ -89,18 +46,22 @@ const Offer = () => {
         serViewOpen(true);
     }
 
-    // useEffect(() => {
-    //     setAddOpen(addAlertOpen)
-    // }, [addAlertOpen])
-
-    // useEffect(() => {
-    //     setAddOpenParent(addOpen)
-    // }, [addOpen])
+    const [dataList, setDataList] = useState([])
+    const [rerenderOffer, setRerenderOffer] = useState(false)
+    useEffect(() => {
+        getAllOffers()
+            .then(response => {
+                setDataList(response.content)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [rerenderOffer])
 
     return (
         <>
-            {(addOpen || updateOpen) && <AddOffers type={type} open={updateOpen ? updateOpen : addOpen} close={updateOpen ? closeUpdateAlert : closeAddAlert} data={updateOpen ? selectedData : null} />}
-            <Delete type={type} open={deleteOpen} close={closeDeleteAlert} data={selectedData} />
+            {(addOpen || updateOpen) && <AddOffers type={type} open={updateOpen ? updateOpen : addOpen} close={updateOpen ? closeUpdateAlert : closeAddAlert} data={updateOpen ? selectedData : null} rerender={() => setRerenderOffer(prev => !prev)} />}
+            <Delete type={type} open={deleteOpen} close={closeDeleteAlert} data={selectedData} rerender={() => setRerenderOffer(prev => !prev)} />
             <View type={type} open={viewOpen} close={() => serViewOpen(false)} data={selectedData} />
             <Paper sx={{ overflow: 'hidden' }} className='mt-10 max-w-full me-0.5'>
                 <TableContainer >
@@ -138,42 +99,37 @@ const Offer = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {dataList.map((row, rowId) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.offerName}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.offerUnitPrice}</TableCell>
-                                        {/* <TableCell className='border-s-2 border-gray-200 '>
-                                            {row.items.map((item, index) => (
-                                                <p key={index}>{item.categoryName}</p>
-                                            ))
-                                            }
-                                        </TableCell> */}
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.endDate}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            {
-                                                row.status == "ACTIVE"
-                                                    ? <div className='relative text-green-300 flex justify-center'>
-                                                        <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                                                        <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                                                    </div>
-                                                    : <div className='relative text-red-300 flex justify-center'>
-                                                        <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                                                        <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                                                    </div>
-                                            }
-                                        </TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            <span className='flex justify-center gap-3'>
-                                                <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
-                                                <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
-                                                <span onClick={() => openViewAlert(row.id)}><VisibilityRounded className='text-green-300 hover:scale-110 duration-150' /></span>
-                                            </span>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                            {dataList.filter(item => item.status == 'ACTIVE')
+                                .map((row, rowId) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
+                                            <TableCell className='border-s-2 border-gray-200 '>{row.offerName}</TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>{row.offerUnitPrice}</TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>{row.endDate}</TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>
+                                                {
+                                                    row.status == "ACTIVE"
+                                                        ? <div className='relative text-green-300 flex justify-center'>
+                                                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                                                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                                                        </div>
+                                                        : <div className='relative text-red-300 flex justify-center'>
+                                                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                                                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                                                        </div>
+                                                }
+                                            </TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>
+                                                <span className='flex justify-center gap-3'>
+                                                    <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
+                                                    <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
+                                                    <span onClick={() => openViewAlert(row.id)}><VisibilityRounded className='text-green-300 hover:scale-110 duration-150' /></span>
+                                                </span>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
                         </TableBody>
                     </Table>
                 </TableContainer>

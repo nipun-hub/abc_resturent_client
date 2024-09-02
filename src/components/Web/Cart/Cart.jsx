@@ -5,7 +5,7 @@ import { StoreContext } from '../../../context/StoreContext';
 
 const Cart = ({ cartIsOpen, setCartIsOpen, setCheckoutOpen }) => {
 
-    const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
+    const { cartItem, itemsList, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
     return (
         <div>
             <Drawer isOpen={cartIsOpen} setIsOpen={setCartIsOpen}>
@@ -20,14 +20,14 @@ const Cart = ({ cartIsOpen, setCartIsOpen, setCheckoutOpen }) => {
                                     (
                                         Object.entries(cartItem).map(([key, value], index) => {
                                             if (value > 0) {
-                                                const item = food_list.find(item => item._id === key);
+                                                const item = itemsList.find(item => item.id === key);
                                                 return item ? (
                                                     <>
                                                         <div key={key} className='flex gap-3 justify-between'>
-                                                            <img src={item.image} width={100} alt="" className='rounded' />
+                                                            <img src={item.imageUrl} width={100} alt="" className='rounded' />
                                                             <div>
-                                                                <p>{item.name}</p>
-                                                                <p>Rs: {item.price}.00</p>
+                                                                <p>{item.itemName}</p>
+                                                                <p>Rs: {item.unitPrice}.00</p>
                                                             </div>
                                                             <div className='flex gap-3 text-xs items-center'>
                                                                 <span className='text-gray-400' onClick={() => removeFromCart(key)}><RemoveCircleOutline /></span>
@@ -53,11 +53,11 @@ const Cart = ({ cartIsOpen, setCartIsOpen, setCheckoutOpen }) => {
                         </div>
                     </div>
                     <div className='h-1/6 w-full grid justify-items-stretch '>
-                        <div className='text-right text-sm text-gray-400 grid gap-1'>
-                            <p>Delivery Charge : Rs. 3500.00</p>
-                            <p>Packing Charge : Rs. 100.00</p>
-                            <p className='text-green-400'>Total Charge : Rs. {getTotalCartAmount()}.00</p>
-                        </div>
+                        {/* <div className='text-right text-sm text-gray-400 grid gap-1'> */}
+                        {/* <p>Delivery Charge : Rs. 3500.00</p> */}
+                        {/* <p>Packing Charge : Rs. 100.00</p> */}
+                        {/* <p className='text-green-400'>Total Charge : Rs. {getTotalCartAmount()}.00</p> */}
+                        {/* </div> */}
                         <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'
                             onClick={() => {
                                 setCartIsOpen(false)

@@ -1,26 +1,13 @@
 
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { food_list } from "../assets/web/images/assets";
-
+import { getAllCategories, getAllItems } from "../services/Common/CommonService";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
     const [token, setToken] = useState(JSON.parse(localStorage.getItem('user')))
-
-    // const [token, setToken] = useState({
-    //     token: '',
-    //     name: '',
-    //     role: '',
-    // });
-
-    // const updateToken = (target, value) => {
-    //     setToken(prevToken => ({
-    //         ...prevToken,
-    //         [target]: value,
-    //     }));
-    // }
 
     const refreshToken = () => {
         setToken(JSON.parse(localStorage.getItem('user')))
@@ -31,7 +18,6 @@ const StoreContextProvider = (props) => {
         console.log(token)
         localStorage.removeItem('user');
         refreshToken()
-        // setToken([])
     }
 
     const [cartItem, setCartItem] = useState({});
@@ -56,12 +42,38 @@ const StoreContextProvider = (props) => {
         let totalAmount = 0;
         for (const item in cartItem) {
             if (cartItem[item] > 0) {
-                let itemInfo = food_list.find((product) => product._id === item);
-                totalAmount += itemInfo.price * cartItem[item];
+                let itemInfo = itemsList.find((product) => product.id === item);
+                totalAmount += (itemInfo.unitPrice * cartItem[item]) / 100 * (100 - (itemInfo.discountPercentage > 0 ? itemInfo.discountPercentage : 1));
             }
         }
         return totalAmount;
     }
+
+    const [categoriesList, setCategoriesList] = useState([])
+    const [rerenderCategory, setRerenderCategory] = useState(false)
+
+    useEffect(() => {
+        getAllCategories()
+            .then(response => {
+                setCategoriesList(response.content)
+            })
+            .then((error) => {
+                console.log(error)
+            })
+    }, [rerenderCategory])
+
+    const [itemsList, setItemsList] = useState([])
+    const [rerenderItems, setRerenderItems] = useState(false)
+
+    useEffect(() => {
+        getAllItems()
+            .then(response => {
+                setItemsList(response.content.filter(item => item.status == 'ACTIVE'))
+            })
+            .then((error) => {
+                console.log(error)
+            })
+    }, [rerenderItems])
 
     // set review session
     const [reviewsOpen, setReviewsOpen] = useState(false);
@@ -87,6 +99,10 @@ const StoreContextProvider = (props) => {
         id,
         handleReviewsOpen,
         handleReviewsClose,
+        categoriesList,
+        setRerenderCategory,
+        itemsList,
+        setRerenderItems,
     }
 
 

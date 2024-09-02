@@ -1,7 +1,14 @@
 import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, DialogFooter, DialogHeader, Typography } from '@material-tailwind/react'
 import React from 'react'
+import { deleteItem } from '../../../../../services/admin/AdminService'
 
-const DeleteItem = ({ open, close, data }) => {
+const DeleteItem = ({ open, close, data, rerender }) => {
+
+    const handelConform = () => {
+        deleteItem(data.id)
+        rerender()
+        close()
+    }
 
     return (
         <Dialog size="sm" open={open} handler={close} className="p-4">
@@ -34,7 +41,7 @@ const DeleteItem = ({ open, close, data }) => {
                 <Button
                     variant="gradient"
                     color="red"
-                    onClick={() => handleOpen(null)}
+                    onClick={handelConform}
                 >
                     <span>Confirm</span>
                 </Button>

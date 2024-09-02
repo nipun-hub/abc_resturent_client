@@ -12,57 +12,12 @@ import CategoryHead from './CategoryHead';
 import Add from './Alert/Add';
 import Delete from './Alert/Delete';
 import View from './Alert/View';
+import { StoreContext } from '../../../../context/StoreContext';
 
-const columns = ["Name", "Description", 'Price', 'Category', 'Status', 'Action'];
-
-const dataList = [
-    {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa1",
-        itemName: "awwwww",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-        status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
-    }, {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa2",
-        itemName: "ffffff",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-        status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
-    },
-    {
-        id: "49bbc540-3eb0-479e-980d-d3a8711d6fa3",
-        itemName: "aaaaaa",
-        description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-        rate: 0,
-        unitPrice: 200.0,
-        discountPercentage: 5.0,
-        imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-        status: "ACTIVE",
-        category: {
-            id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-            categoryName: "Hot",
-            status: "ACTIVE"
-        }
-    }
-];
+const columns = ["Name", 'Status', 'Action'];
 
 export default function Category() {
+    const { categoriesList } = React.useContext(StoreContext)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -85,23 +40,23 @@ export default function Category() {
     const closeDeleteAlert = () => { serDeleteOpen(false) }
     const closeUpdateAlert = () => { serUpdateOpen(false) }
     const openDeleteAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedCategoryData(categoriesList.filter(item => item.id === id)[0])
         serDeleteOpen(true)
     }
     const openUpdateAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedCategoryData(categoriesList.filter(item => item.id === id)[0])
         serUpdateOpen(true);
     }
     const openViewAlert = (id) => {
-        setSelectedCategoryData(dataList.filter(item => item.id === id)[0])
+        setSelectedCategoryData(categoriesList.filter(item => item.id === id)[0])
         serViewOpen(true);
     }
+
+    const [searchText, setSearchText] = React.useState()
 
     return (
         <>
             {(addCategoryOpen || updateOpen) && <Add open={updateOpen ? updateOpen : addCategoryOpen} close={updateOpen ? closeUpdateAlert : closeAddCategoryAlert} data={updateOpen ? selectedCategoryData : null} />}
-            <Delete open={deleteOpen} close={closeDeleteAlert} data={selectedCategoryData} />
-            <View open={viewOpen} close={() => serViewOpen(false)} data={selectedCategoryData} />
 
             <CategoryHead setOpen={() => setAddCategoryOpen(true)} />
 
@@ -110,7 +65,6 @@ export default function Category() {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                {/* {columns.map((column) => ( */}
                                 <TableCell colSpan={7}>
                                     <div class="w-full max-w-sm min-w-[200px]">
                                         <div class="relative flex items-center">
@@ -120,12 +74,11 @@ export default function Category() {
 
                                             <input
                                                 class="w-full pl-10 h-10 pr-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                                                placeholder="UI Kits, Dashboards..."
+                                                placeholder="UI Kits, Dashboards..." onChange={(e) => setSearchText(e.target.value)}
                                             />
                                         </div>
                                     </div>
                                 </TableCell>
-                                {/* ))} */}
                             </TableRow>
                         </TableHead>
                         <TableHead>
@@ -141,48 +94,39 @@ export default function Category() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {dataList.map((row, rowId) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.itemName}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>{row.unitPrice}</TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            {[row.category].map((category, index) => (
-                                                <p key={index}>{category.categoryName}</p>
-                                            ))
-                                            }
-                                        </TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            {
-                                                row.status == "ACTIVE"
-                                                    ? <div className='relative text-green-300 flex justify-center'>
-                                                        <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                                                        <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                                                    </div>
-                                                    : <div className='relative text-red-300 flex justify-center'>
-                                                        <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                                                        <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                                                    </div>
-                                            }
-                                        </TableCell>
-                                        <TableCell className='border-s-2 border-gray-200 '>
-                                            <span className='flex justify-center gap-3'>
-                                                <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
-                                                <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
-                                                <span onClick={() => openViewAlert(row.id)}><VisibilityRounded className='text-green-300 hover:scale-110 duration-150' /></span>
-                                            </span>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                            {categoriesList.filter(item => item.categoryName.includes(searchText) || !searchText)
+                                .map((row, rowId) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
+                                            <TableCell className='border-s-2 border-gray-200 '>{row.categoryName}</TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>
+                                                {
+                                                    row.status == "ACTIVE"
+                                                        ? <div className='relative text-green-300 flex justify-center'>
+                                                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                                                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                                                        </div>
+                                                        : <div className='relative text-red-300 flex justify-center'>
+                                                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                                                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                                                        </div>
+                                                }
+                                            </TableCell>
+                                            <TableCell className='border-s-2 border-gray-200 '>
+                                                <span className='flex justify-center gap-3'>
+                                                    <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
+                                                </span>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={dataList.length}
+                    count={categoriesList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

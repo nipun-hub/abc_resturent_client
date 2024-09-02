@@ -1,5 +1,5 @@
 import React from 'react'
-import {Tabs,TabsHeader,TabsBody,Tab,TabPanel,} from "@material-tailwind/react";
+import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, } from "@material-tailwind/react";
 import { image01, image02, image05, image07, image08, image10 } from '../../../assets/web/images/gallery/gallery';
 
 const Gallery = () => {
@@ -158,31 +158,32 @@ const Gallery = () => {
   ];
 
   return (
-    <Tabs value="html">
-      <TabsHeader>
-        {data.map(({ label, value }) => (
-          <Tab key={value} value={value}>
-            {label}
-          </Tab>
-        ))}
-      </TabsHeader>
-      <TabsBody className="grid grid-cols-1 gap-4 ">
-        {data.map(({ value, images }) => (
-          <TabPanel
-            className="grid grid-cols-2 gap-4 md:grid-cols-3"
-            key={value}
-            value={value}
-          >
-            {images?.map(({ imageLink }, index) => (
-              <div key={index}>
-                <img
-                  className="h-40 w-full max-w-full rounded-lg object-cover object-center"
-                  src={imageLink}
-                  alt="image-photo"
-                />
-              </div>
-            ))}
-             <div>
+    <>
+      <Tabs value="html">
+        <TabsHeader>
+          {data.map(({ label, value }) => (
+            <Tab key={value} value={value}>
+              {label}
+            </Tab>
+          ))}
+        </TabsHeader>
+        {/* <TabsBody className="grid grid-cols-1 gap-4 ">
+          {data.map(({ value, images }) => (
+            <TabPanel
+              className="grid grid-cols-2 gap-4 md:grid-cols-3"
+              key={value}
+              value={value}
+            >
+              {images?.map(({ imageLink }, index) => (
+                <div key={index}>
+                  <img
+                    className="h-40 w-full max-w-full rounded-lg object-cover object-center"
+                    src={imageLink}
+                    alt="image-photo"
+                  />
+                </div>
+              ))}
+              <div>
                 <img
                   className="h-40 w-full max-w-full rounded-lg object-cover object-center"
                   src={image02}
@@ -203,10 +204,11 @@ const Gallery = () => {
                   alt="image-photo"
                 />
               </div>
-          </TabPanel>
-        ))}
-      </TabsBody>
-    </Tabs>
+            </TabPanel>
+          ))}
+        </TabsBody> */}
+      </Tabs>
+    </>
   )
 }
 

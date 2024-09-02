@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Accordion, AccordionBody, AccordionHeader, Avatar, Dialog, Input, MenuItem, Option, Select, Textarea, Typography } from '@material-tailwind/react';
 import { useState } from 'react';
 import { Hub, LocalOfferRounded, PunchClock } from '@mui/icons-material';
-import SelectItem from './SelectItem';
 import { Checkbox } from '@mui/material';
+import { StoreContext } from '../../../../../context/StoreContext';
+import { createOffer, updateOffer } from '../../../../../services/admin/AdminService'
 
 const itemList = [
     {
@@ -65,8 +66,8 @@ const categoryList = [
     }
 ];
 
-const AddOffers = ({ open, close, data }) => {
-    console.log(data)
+const AddOffers = ({ open, close, data, rerender }) => {
+    const { itemsList, setRerenderItems } = useContext(StoreContext)
 
     const [addItemData, setAddItemData] = useState({
         offerName: data ? data.offerName : '',
@@ -76,6 +77,7 @@ const AddOffers = ({ open, close, data }) => {
         endDate: data ? data.endDate : '',
         description: data ? data.description : '',
         items: data ? data.items : [],
+        file: null,
     })
 
     const updateSetAddItemData = (name, value, isChecked = null) => {
@@ -99,24 +101,8 @@ const AddOffers = ({ open, close, data }) => {
         });
     };
 
-    // const handleCheckboxChange = (event) => {
-    //     const { value, checked } = event.target;
-
-    //     if (checked) {
-    //         setSelectedItems((prev) => [...prev, value]); // Add the item if checked
-    //     } else {
-    //         setSelectedItems((prev) => prev.filter((item) => item !== value)); // Remove the item if unchecked
-    //     }
-    // };
-
-    // const updateSetAddItemData = (name, value) => {
-    //     setAddItemData(prev => ({
-    //         ...prev,
-    //         [name]: value,
-    //     }))
-    // }
-
     const handelImageUpload = (file) => {
+        updateSetAddItemData('file', file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
@@ -124,112 +110,147 @@ const AddOffers = ({ open, close, data }) => {
         }
     }
 
-    const handelSubmit = () => {
-        console.log(!data ? 'insert' : 'update')
-        console.log(addItemData)
-    }
+    const handelSubmit = (e) => {
+        e.preventDefault();
 
-    // const [isOpenSelectItem, setOpenSelectItem] = useState(false);
+        const formData = new FormData();
+        const offer = {
+            offerName: addItemData.offerName,
+            description: addItemData.description,
+            offerUnitPrice: addItemData.offerUnitPrice,
+            startDate: addItemData.startDate,
+            endDate: addItemData.endDate,
+            items: addItemData.items
+        };
+        formData.append('offer', JSON.stringify(offer));
+        formData.append('image', addItemData.file);
+
+        try {
+
+            if (!data) {
+                createOffer(formData)
+                    .then(response => {
+                        rerender()
+                        close()
+                    })
+            } else {
+                updateOffer(data.id, {
+                    offerName: data.offerName,
+                    description: data.description,
+                    offerUnitPrice: data.offerUnitPrice,
+                })
+                    .then(response => {
+                        rerender()
+                        close()
+                    })
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const [openAccording, setOpenAccording] = useState(false)
 
     return (
         <>
-            {/* <SelectItem open={isOpenSelectItem} close={() => setOpenSelectItem(false)} /> */}
             <Dialog size="sm" open={open} handler={close} className="p-4">
-                {/* <div className="absolute bg-black opacity-60 inset-0 z-0"></div> */}
                 <div className=" w-full p-10 bg-white rounded-xl z-10 flex flex-col gap-1 max-h-[90vh] overflow-auto">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-gray-900">{data ? 'Update item' : 'Add Offers'}</h2>
-                        {/* <p className="mt-2 text-sm text-gray-400">Lorem ipsum is placeholder text.</p> */}
                     </div>
-                    {/* <form className="mt-8 space-y-3"> */}
-                    <div className='md:flex gap-3'>
-                        <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
-                            <label className="text-sm font-bold text-gray-500 tracking-wide">Offer Name</label>
-                            <Input value={addItemData.offerName} name='offerName' label='Offer name' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} />
+                    <form className="mt-8 space-y-3" onSubmit={handelSubmit}>
+                        <div className='md:flex gap-3'>
+                            <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
+                                <label className="text-sm font-bold text-gray-500 tracking-wide">Offer Name</label>
+                                <Input value={addItemData.offerName} name='offerName' label='Offer name' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} required />
+                            </div>
+
+                            <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
+                                <label className="text-sm font-bold text-gray-500 tracking-wide">Unit Price</label>
+                                <Input value={addItemData.offerUnitPrice} name='offerUnitPrice' label='Unit price' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} required />
+                            </div>
                         </div>
 
-                        <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
-                            <label className="text-sm font-bold text-gray-500 tracking-wide">Unit Price</label>
-                            <Input value={addItemData.offerUnitPrice} name='offerUnitPrice' label='Unit price' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                    <div className='md:flex gap-3'>
-                        <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
-                            <label className="text-sm font-bold text-gray-500 tracking-wide">Start date</label>
-                            <Input type='date' value={addItemData.startDate} name='startDate' label='Start date' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} />
-                        </div>
-
-                        <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
-                            <label className="text-sm font-bold text-gray-500 tracking-wide">End date</label>
-                            <Input type='date' value={addItemData.endDate} name='endDate' label='End date' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 space-y-2 w-full">
-                        <label className="text-sm font-bold text-gray-500 tracking-wide text-left">Select Item</label>
-                        {/* <button className=' py-1 px-3 w-fit rounded-md bg-gray-500 text-white'>Select Items in offers</button> */}
-                        <div>
-                            <Accordion open={openAccording} className="mb-2 rounded-lg border border-blue-gray-100 px-4">
-                                <AccordionHeader
-                                    onClick={() => setOpenAccording(pre => !pre)}
-                                    className={`border-b-0 transition-colors text-sm text-gray-500 ${openAccording && "text-blue-500 hover:!text-blue-700"}`}
-                                >
-                                    Select offered item
-                                </AccordionHeader>
-                                <AccordionBody className="pt-0 text-base font-normal flex flex-col gap-3">
-                                    {
-                                        itemList.map((item, index) => (
-                                            <label key={index} className="flex items-center gap-4 py-2 pl-2 pr-8 bg-gray-100 hover:bg-gray-200 rounded-md w-full" htmlFor={item.id}>
-                                                <Checkbox id={item.id} size="small" color="default" value={item.id} onClick={(e) => updateSetAddItemData('items', e.target.value, e.target.checked)}
-                                                    defaultChecked={data ? data.items.some((filterItem) => filterItem.id === item.id) : false}
-                                                />
-                                                <Avatar
-                                                    variant="circular"
-                                                    alt="paypal"
-                                                    src={item.imageUrl}
-                                                />
-                                                <div className="flex flex-col gap-1">
-                                                    <Typography variant="small" color="gray" className="font-semibold">{item.itemName}</Typography>
-                                                    <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
-                                                        <LocalOfferRounded fontSize="small" />Rs : {item.unitPrice}.00
-                                                    </Typography>
-                                                </div>
-                                            </label>
-                                        ))
-                                    }
-                                </AccordionBody>
-                            </Accordion>
-                        </div>
-
-                    </div>
-                    <div className="grid grid-cols-1 space-y-2">
-                        <label className="text-sm font-bold text-gray-500 tracking-wide">Description</label>
-                        <Textarea value={addItemData.description} name='description' label='Description' color='blue-gray' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)}></Textarea>
-                    </div>
-                    <div className="grid grid-cols-1 space-y-2">
-                        <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
-                        <div className="flex items-center justify-center w-full">
-                            <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
-                                <div className="h-full w-full text-center flex flex-col justify-center items-center  ">
-                                    <div className="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10 justify-center">
-                                        <img className="has-mask h-36 object-center" src={addItemData.imageUrl ? addItemData.imageUrl : "https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg"} alt="freebie image" />
-                                    </div>
-                                    <p className="pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" className="text-blue-600 hover:underline">select a file</a> from your computer</p>
+                        {!data && <>
+                            <div className='md:flex gap-3'>
+                                <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
+                                    <label className="text-sm font-bold text-gray-500 tracking-wide">Start date</label>
+                                    <Input type='date' value={addItemData.startDate} name='startDate' label='Start date' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} required />
                                 </div>
-                                <input name='image' type="file" className="hidden" onChange={(e) => handelImageUpload(e.target.files[0])} />
-                            </label>
+
+                                <div className="grid grid-cols-1 space-y-2 w-full md:w-1/2">
+                                    <label className="text-sm font-bold text-gray-500 tracking-wide">End date</label>
+                                    <Input type='date' value={addItemData.endDate} name='endDate' label='End date' color='blue-gray' className='before::outline-gray-300 text-s' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} required />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 space-y-2 w-full">
+                                <label className="text-sm font-bold text-gray-500 tracking-wide text-left">Select Item</label>
+                                <div>
+                                    <Accordion open={openAccording} className="mb-2 rounded-lg border border-blue-gray-100 px-4">
+                                        <AccordionHeader
+                                            onClick={() => setOpenAccording(pre => !pre)}
+                                            className={`border-b-0 transition-colors text-sm text-gray-500 ${openAccording && "text-blue-500 hover:!text-blue-700"}`}
+                                        >
+                                            Select offered item
+                                        </AccordionHeader>
+                                        <AccordionBody className="pt-0 text-base font-normal flex flex-col gap-3">
+                                            {
+                                                itemsList.map((item, index) => (
+                                                    <label key={index} className="flex items-center gap-4 py-2 pl-2 pr-8 bg-gray-100 hover:bg-gray-200 rounded-md w-full" htmlFor={item.id}>
+                                                        <Checkbox id={item.id} size="small" color="default" value={item.id} onClick={(e) => updateSetAddItemData('items', e.target.value, e.target.checked)}
+                                                            defaultChecked={data ? data.items.some((filterItem) => filterItem.id === item.id) : false}
+                                                        />
+                                                        <Avatar
+                                                            variant="circular"
+                                                            alt="paypal"
+                                                            src={item.imageUrl}
+                                                        />
+                                                        <div className="flex flex-col gap-1">
+                                                            <Typography variant="small" color="gray" className="font-semibold">{item.itemName}</Typography>
+                                                            <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
+                                                                <LocalOfferRounded fontSize="small" />Rs : {item.unitPrice}.00
+                                                            </Typography>
+                                                        </div>
+                                                    </label>
+                                                ))
+                                            }
+                                        </AccordionBody>
+                                    </Accordion>
+                                </div>
+                            </div>
+                        </>
+                        }
+
+                        <div className="grid grid-cols-1 space-y-2">
+                            <label className="text-sm font-bold text-gray-500 tracking-wide">Description</label>
+                            <Textarea value={addItemData.description} name='description' label='Description' color='blue-gray' onChange={(e) => updateSetAddItemData(e.target.name, e.target.value)} required></Textarea>
                         </div>
-                    </div>
-                    <div>
-                        <button type="submit" className="my-5 w-full flex justify-center bg-red-500 text-gray-100 p-4  rounded-full tracking-wide
+                        {!data &&
+                            <div className="grid grid-cols-1 space-y-2">
+                                <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
+                                <div className="flex items-center justify-center w-full">
+                                    <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+                                        <div className="h-full w-full text-center flex flex-col justify-center items-center  ">
+                                            <div className="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10 justify-center">
+                                                <img className="has-mask h-36 object-center" src={addItemData.imageUrl ? addItemData.imageUrl : "https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg"} alt="freebie image" />
+                                            </div>
+                                            <p className="pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" className="text-blue-600 hover:underline">select a file</a> from your computer</p>
+                                        </div>
+                                        <input name='image' type="file" className="hidden" onChange={(e) => handelImageUpload(e.target.files[0])} required />
+                                    </label>
+                                </div>
+                            </div>
+
+                        }
+                        <div>
+                            <button type="submit" className="my-5 w-full flex justify-center bg-red-500 text-gray-100 p-4  rounded-full tracking-wide
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300"
-                            onClick={handelSubmit}
-                        >
-                            {data ? 'Update' : 'edit'}
-                        </button>
-                    </div>
-                    {/* </form> */}
+                            >
+                                {data ? 'Update' : 'edit'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </Dialog>
         </>

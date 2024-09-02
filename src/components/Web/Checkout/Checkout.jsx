@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { AddCircleOutline, DeleteForever, RemoveCircleOutline } from '@mui/icons-material';
 import { StoreContext } from '../../../context/StoreContext';
+import { getAllOffers } from '../../../services/Common/CommonService';
 
 const modalStyle = {
   position: 'absolute',
@@ -17,7 +18,32 @@ const modalStyle = {
 };
 
 const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
-  const { cartItem, food_list, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
+  const { cartItem, itemsList, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
+
+  const [offers, setOffers] = React.useState([
+    {
+      offerName: 'Offers',
+      offerUnitPrice: 0,
+    }
+  ])
+
+  const updateOffers = (name, value) => {
+    setOffers({
+      ...prev,
+      [name]: value
+    });
+  }
+
+  React.useEffect(() => {
+    try {
+      getAllOffers()
+        .then(response => {
+          console.log(response)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  })
 
   const renderCartItems = () => {
     const cartItemEntries = Object.entries(cartItem);
@@ -33,15 +59,16 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
     }
 
     return nonEmptyCartItems.map(([key, value]) => {
-      const item = food_list.find(item => item._id === key);
+      const item = itemsList.find(item => item.id === key);
       if (!item) return null;
 
       return (
         <div key={key} className='flex gap-3 justify-between border-dashed border-4 p-2'>
-          <img src={item.image} width={100} alt={item.name} className='rounded' />
+          <img src={item.imageUrl} width={100} alt={item.itemName} className='rounded' />
           <div>
-            <p>{item.name}</p>
-            <p>Rs: {item.price}.00</p>
+            <p>{item.itemName}</p>
+            <p>Rs: {item.unitPrice}.00</p>
+            <p>{item.discountPercentage && item.discountPercentage > 0 ? `Discount : ${item.discountPercentage}%` : ''}</p>
           </div>
           <div className='flex gap-3 text-xs items-center'>
             <button className='text-gray-400' onClick={() => removeFromCart(key)}><RemoveCircleOutline /></button>
@@ -73,7 +100,7 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
               </div>
               <hr />
               <div className='mt-5'>
-                <div className='grid grid-cols-2 gap-5'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 '>
                   {renderCartItems()}
                 </div>
               </div>
@@ -90,19 +117,19 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
                     <p>Total</p><p>Rs: {getTotalCartAmount()}.00</p>
                   </div>
                   <div className='flex justify-between border-t-2 p-3 bg-gray-50'>
-                    <p>Delivery Charge</p><p>Rs: 15.00</p>
+                    <p>Delivery Charge</p><p>Rs: 300.00</p>
                   </div>
                   <div className='flex justify-between border-t-2 p-3 bg-gray-50'>
-                    <p>Packing Charge</p><p>Rs: 350.00</p>
+                    <p>Packing Charge</p><p>Rs: 50.00</p>
                   </div>
                   <div className='flex justify-between border-t-2 p-3 bg-gray-50'>
-                    <p>Discount amount</p><p>Rs: 350.00</p>
+                    {/* <p>{offers.map((item, id) => (<p key={id}>{item.offerName}</p>))}</p> <p>{offers.map((item, id) => (<p key={id}>{item.offerUnitPrice} %</p>))}</p> */}
                   </div>
                   <div className='flex justify-between border-t-2 p-3 bg-gray-50 text-red-400 text-2xl items-center'>
                     <p className='flex gap-3 items-center'>
-                      <img src="https://www.kfc.lk/images/icons/stamp.png" alt="Total" width={50} />Total
+                      <img src="https://www.kfc.lk/images/icons/stamp.png" alt="Total" width={50} />
                     </p>
-                    <p>Rs: {getTotalCartAmount() + 15}.00</p>
+                    <p>Rs: {getTotalCartAmount() +300+50}.00</p>
                   </div>
                   <div className='flex justify-between border-t-2 border-b-2 p-3 bg-gray-50'>
                     <p>Review your order before checkout.</p>

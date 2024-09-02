@@ -2,20 +2,25 @@ import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, DialogFooter, D
 import React from 'react'
 
 const Delete = ({ open, close, data }) => {
+    const { setRerenderCategory } = React.useContext(StoreContext)
+
+
+    const handelConform = () => {
+
+        setRerenderCategory()
+        close()
+    }
 
     return (
         <Dialog size="sm" open={open} handler={close} className="p-4">
-            <DialogHeader>Are you shure deleted {data.itemName}</DialogHeader>
+            <DialogHeader>Are you shure deleted {data.categoryName}</DialogHeader>
             <DialogBody>
                 {
-                    data.itemName && (
+                    data.categoryName && (
                         <Card className="shadow-white">
                             <CardBody className='flex gap-3 border-dashed border-2 p-2 rounded-md'>
-                                <img width={125} height={125} src={data.imageUrl} className='rounded-md' />
                                 <Typography className='flex flex-col justify-between'>
-                                    <Typography variant="h5" color="blue-gray" className="mb-2">{data.itemName}</Typography>
-                                    <Typography>{data.description}</Typography>
-                                    <Typography>Rs : {data.unitPrice}</Typography>
+                                    <Typography variant="h5" color="blue-gray" className="mb-2">{data.categoryName}</Typography>
                                 </Typography>
                             </CardBody>
                         </Card>
@@ -34,7 +39,7 @@ const Delete = ({ open, close, data }) => {
                 <Button
                     variant="gradient"
                     color="red"
-                    onClick={() => handleOpen(null)}
+                    onClick={() => handelConform()}
                 >
                     <span>Confirm</span>
                 </Button>

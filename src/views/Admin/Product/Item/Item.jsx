@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-import { AddRounded, AdjustRounded, ArrowRightAltRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from "@mui/icons-material";
+import { AdjustRounded, DeleteOutlineRounded, DriveFileRenameOutlineRounded, VisibilityRounded } from "@mui/icons-material";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,57 +12,12 @@ import AddItemAlert from './Alert/AddItemAlert';
 import ItemHead from './ItemHead';
 import DeleteItem from './Alert/DeleteItem';
 import View from './Alert/View';
+import { getAllItems } from '.././../../../services/Common/CommonService'
 
 const columns = ["Name", "Description", 'Price', 'Category', 'Status', 'Action'];
 
-const dataList = [
-  {
-    id: "49bbc540-3eb0-479e-980d-d3a8711d6fa1",
-    itemName: "awwwww",
-    description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-    rate: 0,
-    unitPrice: 200.0,
-    discountPercentage: 5.0,
-    imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-    status: "ACTIVE",
-    category: {
-      id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-      categoryName: "Hot",
-      status: "ACTIVE"
-    }
-  }, {
-    id: "49bbc540-3eb0-479e-980d-d3a8711d6fa2",
-    itemName: "ffffff",
-    description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-    rate: 0,
-    unitPrice: 200.0,
-    discountPercentage: 5.0,
-    imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-    status: "ACTIVE",
-    category: {
-      id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-      categoryName: "Hot",
-      status: "ACTIVE"
-    }
-  },
-  {
-    id: "49bbc540-3eb0-479e-980d-d3a8711d6fa3",
-    itemName: "aaaaaa",
-    description: "This is a sample description for the item. It should be between 5 and 200 characters.",
-    rate: 0,
-    unitPrice: 200.0,
-    discountPercentage: 5.0,
-    imageUrl: "http://localhost:8080/api/uploads/720f0c10-0a64-405f-a7a4-c64b0e10752f_10.jpeg",
-    status: "ACTIVE",
-    category: {
-      id: "d9894258-6ce3-4f59-91bd-eece4d9c4100",
-      categoryName: "Hot",
-      status: "ACTIVE"
-    }
-  }
-];
-
 export default function Item() {
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -104,14 +52,23 @@ export default function Item() {
     serViewOpen(true);
   }
 
-  // React.useEffect(() => {
-  //   setAddItemOpen(updateOpen)
-  // }, [updateOpen])
+  const [rerender, setRerender] = React.useState(false)
+  const [dataList, setDataList] = React.useState([]);
+
+  React.useEffect(() => {
+    getAllItems()
+      .then(response => {
+        setDataList(response.content)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [rerender])
 
   return (
     <>
-      {(addItemOpen || updateOpen) && <AddItemAlert open={updateOpen ? updateOpen : addItemOpen} close={updateOpen ? closeUpdateAlert : closeAddItemAlert} data={updateOpen ? selectedItemData : null} />}
-      <DeleteItem open={deleteOpen} close={closeDeleteAlert} data={selectedItemData} />
+      {(addItemOpen || updateOpen) && <AddItemAlert open={updateOpen ? updateOpen : addItemOpen} close={updateOpen ? closeUpdateAlert : closeAddItemAlert} data={updateOpen ? selectedItemData : null} rerender={() => setRerender(prev => !prev)} />}
+      <DeleteItem open={deleteOpen} close={closeDeleteAlert} data={selectedItemData} rerender={() => setRerender(prev => !prev)} />
       <View open={viewOpen} close={() => serViewOpen(false)} data={selectedItemData} />
 
       <ItemHead setOpen={setAddItemOpen} />
@@ -152,41 +109,42 @@ export default function Item() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {dataList.map((row, rowId) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
-                    <TableCell className='border-s-2 border-gray-200 '>{row.itemName}</TableCell>
-                    <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
-                    <TableCell className='border-s-2 border-gray-200 '>{row.unitPrice}</TableCell>
-                    <TableCell className='border-s-2 border-gray-200 '>
-                      {[row.category].map((category, index) => (
-                        <p key={index}>{category.categoryName}</p>
-                      ))
-                      }
-                    </TableCell>
-                    <TableCell className='border-s-2 border-gray-200 '>
-                      {
-                        row.status == "ACTIVE"
-                          ? <div className='relative text-green-300 flex justify-center'>
-                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                          </div>
-                          : <div className='relative text-red-300 flex justify-center'>
-                            <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
-                            <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
-                          </div>
-                      }
-                    </TableCell>
-                    <TableCell className='border-s-2 border-gray-200 '>
-                      <span className='flex justify-center gap-3'>
-                        <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
-                        <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
-                        <span onClick={() => openViewAlert(row.id)}><VisibilityRounded className='text-green-300 hover:scale-110 duration-150' /></span>
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {dataList.filter(item => item.status == 'ACTIVE')
+                .map((row, rowId) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
+                      <TableCell className='border-s-2 border-gray-200 '>{row.itemName}</TableCell>
+                      <TableCell className='border-s-2 border-gray-200 '>{row.description}</TableCell>
+                      <TableCell className='border-s-2 border-gray-200 '>{row.unitPrice}</TableCell>
+                      <TableCell className='border-s-2 border-gray-200 '>
+                        {[row.category].map((category, index) => (
+                          <p key={index}>{category.categoryName}</p>
+                        ))
+                        }
+                      </TableCell>
+                      <TableCell className='border-s-2 border-gray-200 '>
+                        {
+                          row.status == "ACTIVE"
+                            ? <div className='relative text-green-300 flex justify-center'>
+                              <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                              <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                            </div>
+                            : <div className='relative text-red-300 flex justify-center'>
+                              <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
+                              <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
+                            </div>
+                        }
+                      </TableCell>
+                      <TableCell className='border-s-2 border-gray-200 '>
+                        <span className='flex justify-center gap-3'>
+                          <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
+                          <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
+                          <span onClick={() => openViewAlert(row.id)}><VisibilityRounded className='text-green-300 hover:scale-110 duration-150' /></span>
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

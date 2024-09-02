@@ -1,8 +1,10 @@
 import React from 'react'
 import { Dialog, Input } from '@material-tailwind/react';
 import { useState } from 'react';
+import { registerUser } from '../../../../../services/Common/CommonService';
+import { errorHandle, notify } from '../../../../../utils/Common/Notification';
 
-const AddStaffAlert = ({ open, close }) => {
+const AddStaffAlert = ({ open, close, rerender }) => {
 
     const [addItemData, setAddItemData] = useState({
         fullName: '',
@@ -20,17 +22,25 @@ const AddStaffAlert = ({ open, close }) => {
         }))
     }
 
-    const handelImageUpload = (file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            updateSetAddItemData('image', reader.result)
-        }
-    }
-
     const handelSubmit = (e) => {
         e.preventDefault();
-        console.log(addItemData)
+        try {
+            registerUser(addItemData)
+                .then(response => {
+                    console.log(response)
+                    notify('Successfully add the staff', 'success')
+                    rerender()
+                    close()
+                })
+                .catch((error) => {
+                    notify('error', 'error')
+                    console.log(error)
+                    errorHandle(error)
+                })
+        } catch (error) {
+            console.log(error)
+            errorHandle(error)
+        }
     }
 
     return (

@@ -1,10 +1,14 @@
-import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, DialogFooter, DialogHeader, Typography } from '@material-tailwind/react'
 import React from 'react'
+import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, DialogFooter, DialogHeader, Typography } from '@material-tailwind/react'
+import { deleteOffer } from '../../../../../services/admin/AdminService'
 
-const Delete = ({ open, close, data }) => {
+const Delete = ({ open, close, data, rerender }) => {
 
-    const deleteOffer = (id) => {
-        console.log('deleted ' + id)
+    const handelDeleteOffer = (id) => {
+        deleteOffer(id).then(response => {
+            rerender()
+            close()
+        })
     }
 
     return (
@@ -38,7 +42,7 @@ const Delete = ({ open, close, data }) => {
                 <Button
                     variant="gradient"
                     color="red"
-                    onClick={() => deleteOffer(data.id)}
+                    onClick={() => handelDeleteOffer(data.id)}
                 >
                     <span>Confirm</span>
                 </Button>
