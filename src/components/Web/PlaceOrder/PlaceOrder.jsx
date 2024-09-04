@@ -53,9 +53,9 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
     });
 
     const dataList = {
-      "orderDate": formData.orderDate,
+      "orderDate": `${formData.orderDate}:00Z`,
       "orderType": orderType,
-      "totalAmount": subTotal,
+      "totalAmount": p,
       "user": {
         "id": getUserId(),
       },
