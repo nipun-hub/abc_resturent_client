@@ -167,7 +167,7 @@ const Gallery = () => {
             </Tab>
           ))}
         </TabsHeader>
-        {/* <TabsBody className="grid grid-cols-1 gap-4 ">
+        <TabsBody className="grid grid-cols-1 gap-4 ">
           {data.map(({ value, images }) => (
             <TabPanel
               className="grid grid-cols-2 gap-4 md:grid-cols-3"
@@ -206,7 +206,7 @@ const Gallery = () => {
               </div>
             </TabPanel>
           ))}
-        </TabsBody> */}
+        </TabsBody>
       </Tabs>
     </>
   )
