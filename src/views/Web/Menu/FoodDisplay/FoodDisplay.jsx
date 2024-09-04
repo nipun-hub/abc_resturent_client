@@ -5,7 +5,7 @@ import { StoreContext } from '../../../../context/StoreContext'
 
 const FoodDisplay = ({ category }) => {
 
-  const { food_list, itemsList } = useContext(StoreContext)
+  const { itemsList } = useContext(StoreContext)
 
   return (
     <div className='Food-Display' id='Food-Display'>

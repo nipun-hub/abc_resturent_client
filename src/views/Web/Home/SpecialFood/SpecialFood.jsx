@@ -5,16 +5,18 @@ import FoodItem from '../../../../components/Web/FoodItem/FoodItem'
 
 const SpecialFood = ({ limit }) => {
 
+  const { itemsList } = useContext(StoreContext)
 
-  const { food_list } = useContext(StoreContext)
+
+  // const { food_list } = useContext(StoreContext)
 
   return (
     <div className='Special-Food-Display' id='Food-Display'>
       {/* <h2>Top dishes near you</h2> */}
       <div className="Special-food-display-list">
-        {food_list.slice(0, limit).map((item, index) => {
+        {itemsList.slice(0, limit).map((item, index) => {
           if (true) {
-            return <FoodItem key={index} id={item._id} name={item.name} price={item.price} description={item.description} image={item.image}></FoodItem>
+            return <FoodItem key={index} id={item.id} name={item.itemName} price={item.unitPrice} description={item.description} image={item.imageUrl}></FoodItem>
           }
         })}
       </div>
