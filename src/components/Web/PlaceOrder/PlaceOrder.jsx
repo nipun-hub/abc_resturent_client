@@ -2,9 +2,10 @@ import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Checkbox, FormControlLabel, FormGroup, FormLabel, Radio, TextField } from '@mui/material';
-import { Handshake, Hotel, LunchDining, Money, Payment, Restaurant } from '@mui/icons-material';
+import { DeliveryDiningRounded, FlatwareRounded, Handshake, Hotel, LocalAtmRounded, LunchDining, Money, Payment, Restaurant, SnowshoeingRounded, VerifiedRounded } from '@mui/icons-material';
 import { StoreContext } from '../../../context/StoreContext';
 import { getUserId } from '../../../utils/Common/Notification';
+import { placeOrder } from '../../../services/web/WebService,jsx';
 
 const style = {
   position: 'absolute',
@@ -17,17 +18,19 @@ const style = {
 };
 
 const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
+  console.log('call odoodo')
   const { getTotalCartAmount, cartItem, itemsList } = useContext(StoreContext);
   const subTotal = getTotalCartAmount() + 300 + 50;
 
-  const [step, setStep] = useState(1); // select type ==> pay data ==> or dating ==> address ==>  done 
+  const [step, setStep] = useState(0); // select type ==> pay data ==> or dating ==> address ==>  done 
   const [paymentMethod, setPaymentMethod] = useState('online'); // [ online , cod , visitShop ]
+  const [orderType, setOrderType] = useState('DINE_IN'); // [ DINE_IN , TAKE_AWAY , DELIVERY ]
 
   const [formData, setFormData] = useState({
     orderDate: "",
   });
 
-  const handleChange = (e) => {
+  const updateFormData = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -36,32 +39,33 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
   };
 
   const PlaceOrder = () => {
+    console.log('place order')
     const cartItemEntries = Object.entries(cartItem);
     const nonEmptyCartItems = cartItemEntries.filter(([_, value]) => value > 0);
+    const orderDetails = nonEmptyCartItems.map(([key, value]) => {
+      const item = itemsList.find(item => item.id === key);
+      return {
+        quantity: value,
+        item: {
+          id: item.id,
+        }
+      };
+    });
 
     const dataList = {
       "orderDate": formData.orderDate,
-      "orderType": paymentMethod,
+      "orderType": orderType,
       "totalAmount": subTotal,
       "user": {
         "id": getUserId(),
       },
-      "orderDetails": [
-        nonEmptyCartItems.map(([key, value]) => {
-          const item = itemsList.find(item => item.id === key);
-          return {
-            "quantity": value,
-            "item": {
-              "id": item.id,
-            }
-          }
-        })
-
-      ],
+      "orderDetails": orderDetails,
       "payment": {
-        "paymentMethod": "ONLINE"
+        "paymentMethod": paymentMethod,
       }
     }
+    console.log(JSON.stringify(dataList))
+    placeOrder(dataList)
   }
 
   return (
@@ -121,17 +125,53 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                 <FormGroup>
 
                   {
-                    step == 1 &&
+                    step == 0 &&
                     <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
-                      <p>Select Payment Method</p>
+                      <p>Select Order Type</p>
                       <div className='flex gap-4'>
-                        <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'online' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'online'} onClick={() => setPaymentMethod('online')} /><Payment /></FormLabel>
-                        <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'cod' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'cod'} onClick={() => setPaymentMethod('cod')} /><Handshake /></FormLabel>
-                        <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'visitShop' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'visitShop'} onClick={() => setPaymentMethod('visitShop')} /><Restaurant /></FormLabel>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${orderType == 'DINE_IN' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={orderType == 'DINE_IN'} onClick={() => setOrderType('DINE_IN')} /><FlatwareRounded /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>DINE_IN</p>
+                        </div>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${orderType == 'TAKE_AWAY' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={orderType == 'TAKE_AWAY'} onClick={() => setOrderType('TAKE_AWAY')} /><SnowshoeingRounded /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>TAKE_AWAY</p>
+                        </div>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${orderType == 'DELIVERY' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={orderType == 'DELIVERY'} onClick={() => setOrderType('DELIVERY')} /><DeliveryDiningRounded /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>DELIVERY</p>
+                        </div>
                       </div>
                       <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'
                         onClick={() => { setStep(step + 1) }}
                       >Next</button>
+                    </div>
+                  }
+
+                  {
+                    step == 1 &&
+                    <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
+                      <p>Select Payment Method</p>
+                      <div className='flex gap-4'>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'online' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'online'} onClick={() => setPaymentMethod('online')} /><Payment /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>online</p>
+                        </div>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'cod' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'cod'} onClick={() => setPaymentMethod('cod')} /><Handshake /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>cod</p>
+                        </div>
+                        <div>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'visitShop' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'visitShop'} onClick={() => setPaymentMethod('visitShop')} /><Restaurant /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>visitShop</p>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={() => setStep(step - 1)}>Back</button>
+                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'
+                          onClick={() => { setStep(step + 1) }}
+                        >Next</button>
+                      </div>
                     </div>
                   }
 
@@ -163,7 +203,9 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
                         <p className='text-xl font-semibold text-gray-300'>Select dating date</p>
                         <div className='flex flex-col gap-5 px-10 my-3 w-full'>
-                          <input type="datetime-local" name='orderDate' placeholder='select date' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' onClick={(e) => orderDate(e)} />
+                          <input type="datetime-local" name='orderDate' placeholder='select date'
+                            className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300'
+                            onClick={(e) => updateFormData(e)} />
                         </div>
                       </div>
                       <div className='flex gap-5 justify-center mb-5'>
@@ -202,26 +244,25 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                   {step == 4 &&
                     <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
-                        <p className='text-xl font-semibold text-gray-300'>Done</p>
-                        {/* <div className='flex flex-col gap-5 px-10 my-3 w-full'>
-                          <input type="text" placeholder='User name' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="email" placeholder='Email' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="tel" placeholder='mobile' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="text" placeholder='Address' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                        </div> */}
+                        {/* <p className='text-xl font-semibold text-gray-300'>Done</p> */}
+                        <div>
+                          <img src="https://i.pinimg.com/originals/32/b6/f2/32b6f2aeeb2d21c5a29382721cdc67f7.gif" width={300} alt="" srcset="" />
+                        </div>
                       </div>
                       <div className='flex gap-5 justify-center'>
                         <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={() => {
                           paymentMethod == 'visitShop' ? setStep(step - 2) : setStep(step - 1)
                         }}>Back</button>
-                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'>Save</button>
+                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'><VerifiedRounded />&nbsp;&nbsp; Place Order</button>
                       </div>
                     </div>
                   }
 
                 </FormGroup>
 
-                <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full p-3'>Place Order</button>
+                <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full p-3'
+                  onClick={PlaceOrder}
+                >Place Order</button>
 
               </div>
 

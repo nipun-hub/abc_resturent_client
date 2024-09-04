@@ -10,5 +10,5 @@ export const errorHandle = (error) => {
 }
 
 export const getUserId = () => {
-    return JSON.parse(localStorage.getItem('user')).authorization; // Adjust the key if needed
+    return JSON.parse(localStorage.getItem('user')).token; // Adjust the key if needed
 };
