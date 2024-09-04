@@ -154,16 +154,12 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                       <p>Select Payment Method</p>
                       <div className='flex gap-4'>
                         <div>
-                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'online' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'online'} onClick={() => setPaymentMethod('online')} /><Payment /></FormLabel>
-                          <p className='text-lg text-gray-500 mt-2 text-center'>online</p>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'ONLINE' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'ONLINE'} onClick={() => setPaymentMethod('ONLINE')} /><Payment /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>ONLINE</p>
                         </div>
                         <div>
-                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'cod' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'cod'} onClick={() => setPaymentMethod('cod')} /><Handshake /></FormLabel>
-                          <p className='text-lg text-gray-500 mt-2 text-center'>cod</p>
-                        </div>
-                        <div>
-                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'visitShop' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'visitShop'} onClick={() => setPaymentMethod('visitShop')} /><Restaurant /></FormLabel>
-                          <p className='text-lg text-gray-500 mt-2 text-center'>visitShop</p>
+                          <FormLabel className={`bg-gray-200 hover:bg-gray-300  w-24 h-24 flex items-center justify-center rounded-full ${paymentMethod == 'CASH' ? 'bg-red-400 hover:bg-red-500' : ''}`}><Radio style={{ display: 'none' }} checked={paymentMethod == 'CASH'} onClick={() => setPaymentMethod('CASH')} /><Restaurant /></FormLabel>
+                          <p className='text-lg text-gray-500 mt-2 text-center'>CASH</p>
                         </div>
                       </div>
                       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
@@ -176,7 +172,7 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                   }
 
                   {
-                    (paymentMethod == 'online' && step == 2) &&
+                    (paymentMethod == 'ONLINE' && step == 2) &&
                     <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
                         <p className='text-xl font-semibold text-gray-300'>Card Details</p>
@@ -198,14 +194,14 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                   }
 
                   {
-                    (step == 2 && paymentMethod == 'visitShop') &&
+                    (step == 2 && paymentMethod == 'CASH') &&
                     <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
                         <p className='text-xl font-semibold text-gray-300'>Select dating date</p>
                         <div className='flex flex-col gap-5 px-10 my-3 w-full'>
                           <input type="datetime-local" name='orderDate' placeholder='select date'
                             className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300'
-                            onClick={(e) => updateFormData(e)} />
+                            onChange={(e) => updateFormData(e)} />
                         </div>
                       </div>
                       <div className='flex gap-5 justify-center mb-5'>

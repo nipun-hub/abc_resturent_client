@@ -5,13 +5,11 @@ import { getAllCategories, getAllItems } from "../services/Common/CommonService"
 
 export const StoreContext = createContext(null);
 
-localStorage.setItem('user', JSON.stringify({ token: "response.data.id", authorization: "response.headers.authorization", name: 'response.data.fullName', role:'Coustomer' }));
+localStorage.setItem('user', JSON.stringify({ token: "response.data.id", authorization: "response.headers.authorization", name: 'response.data.fullName', role: 'Coustomer' }));
 
 const StoreContextProvider = (props) => {
 
     const [token, setToken] = useState(JSON.parse(localStorage.getItem('user')))
-    // const [token, setToken] = useState({ token: "response.data.id", authorization: "response.headers.authorization", name: 'response.data.fullName', role:'Coustomer' })
-    
 
     const refreshToken = () => {
         setToken(JSON.parse(localStorage.getItem('user')))
