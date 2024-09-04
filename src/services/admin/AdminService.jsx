@@ -167,10 +167,9 @@ export const deleteOffer = async (offerId) => {
 
 // Order endpoint 
 
-export const getAllOrders = async (page = 0, size = 10, paymentStatus) => {
+export const getAllOrders = async () => {
     try {
         const response = await axios.get(`${API_URL}/order/orders`, {
-            params: { page, size, paymentStatus },
             headers: { Authorization: getAuthToken() }
         });
         return response.data;

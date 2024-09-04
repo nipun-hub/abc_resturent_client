@@ -51,6 +51,12 @@ export const SideBarList = [
         identity: '',
     },
     {
+        name: 'inquiry',
+        icon: <DeliveryDiningRounded />,
+        path: '/admin/inquiry',
+        identity: '',
+    },
+    {
         name: 'Notification',
         icon: <NotificationsRounded />,
         path: '/admin/notification',
