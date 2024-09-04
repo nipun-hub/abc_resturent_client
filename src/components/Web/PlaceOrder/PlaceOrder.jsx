@@ -53,7 +53,7 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
     });
 
     const dataList = {
-      "orderDate": formData.orderDate+':00Z',
+      "orderDate": formData.orderDate + ':00Z',
       "orderType": orderType,
       "totalAmount": subTotal,
       "user": {
@@ -193,44 +193,31 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                     </div>
                   }
 
-                  {
-                    (step == 2 && paymentMethod == 'CASH') &&
-                    <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
-                      <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
-                        <p className='text-xl font-semibold text-gray-300'>Select dating date</p>
-                        <div className='flex flex-col gap-5 px-10 my-3 w-full'>
-                          <input type="datetime-local" name='orderDate' placeholder='select date'
-                            className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300'
-                            onChange={(e) => updateFormData(e)} />
-                        </div>
-                      </div>
-                      <div className='flex gap-5 justify-center mb-5'>
-                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={() => setStep(step - 1)}>Back</button>
-                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'
-                          onClick={() => { setStep(step + 2) }}
-                        >Next</button>
-                      </div>
-                    </div>
-                  }
-
-                  {(step == 2 && paymentMethod == 'cod') && setStep(step + 1)}
+                  {(step == 2 && (paymentMethod == 'CASH')) && setStep(step + 1)}
 
                   {step == 3 &&
                     <div className='flex flex-col items-center gap-5 text-gray-300 text-2xl'>
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
                         <p className='text-xl font-semibold text-gray-300'>Delivery details</p>
                         <div className='flex flex-col gap-5 px-10 my-3 w-full'>
-                          <input type="text" placeholder='User name' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="email" placeholder='Email' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="tel" placeholder='mobile' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
-                          <input type="text" placeholder='Address' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                          {
+                            orderType == "DELIVERY" &&
+                            (
+                              <>
+                                <input type="text" placeholder='User name' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                                <input type="email" placeholder='Email' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                                <input type="tel" placeholder='mobile' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' />
+                                <input type="text" placeholder='Address' className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300' /></>
+                            )
+                          }
+                          <input type="datetime-local" name='orderDate' placeholder='select date'
+                            className='border-2 border-gray-200 rounded px-2 py-1 text-sm focus:outline-gray-300'
+                            onChange={(e) => updateFormData(e)} />
                         </div>
                       </div>
                       <div className='flex gap-5 justify-center'>
                         <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'
-                          onClick={() => {
-                            paymentMethod == 'cod' ? setStep(step - 2) : setStep(step - 1)
-                          }}>Back</button>
+                          onClick={() => { setStep(step - 2) }}>Back</button>
                         <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'
                           onClick={() => { setStep(step + 1) }}>Next</button>
                       </div>
@@ -242,23 +229,21 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
                       <div className='flex flex-col items-center w-full m-2 p-3 border-dashed  border-2 border-gray-300'>
                         {/* <p className='text-xl font-semibold text-gray-300'>Done</p> */}
                         <div>
-                          <img src="https://i.pinimg.com/originals/32/b6/f2/32b6f2aeeb2d21c5a29382721cdc67f7.gif" width={300} alt="" srcset="" />
+                          <img src="https://cdn.dribbble.com/users/2470554/screenshots/18253670/media/4194a329e61a0d543d5201cb3c61764e.gif" width={300} alt="" srcset="" />
                         </div>
                       </div>
                       <div className='flex gap-5 justify-center'>
                         <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={() => {
-                          paymentMethod == 'visitShop' ? setStep(step - 2) : setStep(step - 1)
+                          setStep(step - 1)
                         }}>Back</button>
-                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm'><VerifiedRounded />&nbsp;&nbsp; Place Order</button>
+                        <button className='bg-red-800 rounded-full text-white hover:bg-red-700 py-2 px-10 text-sm' onClick={PlaceOrder}><VerifiedRounded />&nbsp;&nbsp; Place Order</button>
                       </div>
                     </div>
                   }
 
                 </FormGroup>
 
-                <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full p-3'
-                  onClick={PlaceOrder}
-                >Place Order</button>
+                <button className='bg-white rounded text-white hover:bg-white w-full p-3'></button>
 
               </div>
 

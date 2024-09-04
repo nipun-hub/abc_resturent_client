@@ -58,13 +58,16 @@ const Cart = ({ cartIsOpen, setCartIsOpen, setCheckoutOpen }) => {
                         {/* <p>Packing Charge : Rs. 100.00</p> */}
                         {/* <p className='text-green-400'>Total Charge : Rs. {getTotalCartAmount()}.00</p> */}
                         {/* </div> */}
-                        <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'
-                            onClick={() => {
-                                setCartIsOpen(false)
-                                setCheckoutOpen()
-                            }}>
-                            <span>Checkout</span>
-                        </button>
+                        {
+                            !Object.keys(cartItem).filter(key => cartItem[key] !== 0).length > 0 ? '' :
+                                <button className='bg-red-800 rounded text-white hover:bg-red-700 w-full h-10 self-end'
+                                    onClick={() => {
+                                        setCartIsOpen(false)
+                                        setCheckoutOpen()
+                                    }}>
+                                    <span>Checkout</span>
+                                </button>
+                        }
                     </div>
                 </div>
             </Drawer>
