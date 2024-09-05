@@ -6,8 +6,8 @@ const Gallery = () => {
 
   const data = [
     {
-      label: "HTML",
-      value: "html",
+      label: "Park",
+      value: "Park",
       images: [
         {
           imageLink:
@@ -36,8 +36,8 @@ const Gallery = () => {
       ],
     },
     {
-      label: "React",
-      value: "react",
+      label: "Lobby",
+      value: "Lobby",
       images: [
         {
           imageLink:
@@ -66,8 +66,8 @@ const Gallery = () => {
       ],
     },
     {
-      label: "Vue",
-      value: "vue",
+      label: "Rooms",
+      value: "Rooms",
       images: [
         {
           imageLink:
@@ -96,8 +96,8 @@ const Gallery = () => {
       ],
     },
     {
-      label: "Angular",
-      value: "angular",
+      label: "Pools",
+      value: "Pools",
       images: [
         {
           imageLink:
@@ -126,8 +126,8 @@ const Gallery = () => {
       ],
     },
     {
-      label: "Svelte",
-      value: "svelte",
+      label: "Bar",
+      value: "Bar",
       images: [
         {
           imageLink:
@@ -159,10 +159,10 @@ const Gallery = () => {
 
   return (
     <>
-      <Tabs value="html">
+      <Tabs value="Park">
         <TabsHeader>
           {data.map(({ label, value }) => (
-            <Tab key={value} value={value}>
+            <Tab className='z-10' key={value} value={value}>
               {label}
             </Tab>
           ))}

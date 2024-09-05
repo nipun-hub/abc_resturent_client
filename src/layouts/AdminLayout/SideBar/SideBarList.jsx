@@ -1,4 +1,4 @@
-import { HomeRounded, ContactsRounded, NotificationsRounded, PersonRounded, SettingsRounded, DeliveryDiningRounded, FastfoodRounded, SupervisorAccountRounded } from "@mui/icons-material";
+import { HomeRounded, ContactsRounded, NotificationsRounded, PersonRounded, SettingsRounded, DeliveryDiningRounded, FastfoodRounded, SupervisorAccountRounded, StickyNote2Rounded } from "@mui/icons-material";
 
 export const SideBarList = [
     {
@@ -52,7 +52,7 @@ export const SideBarList = [
     },
     {
         name: 'inquiry',
-        icon: <DeliveryDiningRounded />,
+        icon: <StickyNote2Rounded />,
         path: '/admin/inquiry',
         identity: '',
     },

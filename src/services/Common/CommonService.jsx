@@ -106,3 +106,45 @@ export const updateOrderStatus = async (orderId, status) => {
         throw error;
     }
 }
+
+// create inquiry 
+
+export const createInquiry = async (body) => {
+    try {
+        const response = await axios.post(`${API_URL}/quiry/create-inquiry`, body, {
+            headers: { Authorization: getAuthToken() }
+        });
+        notify('Successfully send inquiry', 'success')
+        return response.data;
+    } catch (error) {
+        errorHandle(error)
+        throw error;
+    }
+}
+
+export const getAllInquiryById = async (userId) => {
+    try {
+        const response = await axios.get(`${API_URL}/quiry/inquiries`, {
+            params: { 'userId': userId },
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        errorHandle(error)
+        throw error;
+    }
+}
+
+export const getAllInquiry = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/quiry/inquiries`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        errorHandle(error)
+        throw error;
+    }
+}

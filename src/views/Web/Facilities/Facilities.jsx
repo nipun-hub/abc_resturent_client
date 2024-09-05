@@ -1,129 +1,262 @@
-import React, { useState } from "react";
+import React from "react";
+import {
+  Typography,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+} from "@material-tailwind/react";
+import { RemoveCircleOutlineRounded, TaskAltRounded } from "@mui/icons-material";
 
-const Facilities = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    address: "",
-    phone: "",
-    message: "",
-  });
+function PricingCard({ title, desc, price, options }) {
+  return (
+    <Card variant="gradient" color="white">
+      <CardHeader
+        floated={false}
+        shadow={false}
+        color="transparent"
+        className="!m-0 p-6"
+      >
+        <Typography
+          variant="h6"
+          color="blue-gray"
+          className="capitalize font-bold mb-1"
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant="small"
+          className="font-normal !text-gray-500"
+        >
+          {desc}
+        </Typography>
+        <Typography
+          variant="h3"
+          color="blue-gray"
+          className="!mt-4 flex gap-1 !text-4xl"
+        >
+          {price[0]}
+          {price[1]}
+          <Typography
+            as="span"
+            color="blue-gray"
+            className="-translate-y-0.5 self-end opacity-70 text-lg font-bold"
+          >
+            /{price[2]}
+          </Typography>
+        </Typography>
+      </CardHeader>
+      <CardBody className="pt-0">
+        <ul className="flex flex-col gap-3 mb-6">
+          {options.map((option, key) => (
+            <li
+              key={key}
+              className="flex items-center gap-3 text-gray-700"
+            >
+              {option.icon}
+              <Typography
+                variant="small"
+                className="font-normal text-inherit"
+              >
+                {option.info}
+              </Typography>
+            </li>
+          ))}
+        </ul>
+        <Button fullWidth variant="gradient" color="gray">
+          get started
+        </Button>
+      </CardBody>
+    </Card>
+  );
+}
 
-  const [errors, setErrors] = useState({}); // To track form errors
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Check required fields
-    if (!formData.fullName) newErrors.fullName = "Full Name is required.";
-    if (!formData.email) newErrors.email = "Email is required.";
-    if (!formData.phone) newErrors.phone = "Phone number is required.";
-    if (!formData.message) newErrors.message = "Message is required.";
-
-    // Add custom validation rules if needed
-    // For example: Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.email && !emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email.";
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted successfully", formData);
-      // Submit form data to API or perform other actions
-    } else {
-      console.log("Form has errors");
-    }
-  };
+export function Facilities() {
+  const cards = [
+    {
+      title: "starter",
+      desc: "Free access for 2 members",
+      price: ["$", "129", "year"],
+      options: [
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Complete documentation",
+        },
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Working materials in Sketch",
+        },
+        {
+          icon: (
+            <RemoveCircleOutlineRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Integration help",
+        },
+        {
+          icon: (
+            <RemoveCircleOutlineRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "40GB Cloud storage",
+        },
+        {
+          icon: (
+            <RemoveCircleOutlineRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Support team full assist",
+        },
+      ],
+    },
+    {
+      title: "premium",
+      desc: "Free access for 30 members",
+      price: ["$", "299", "year"],
+      options: [
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Complete documentation",
+        },
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Working materials in Sketch",
+        },
+        {
+          icon: (
+            <TaskAltRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Integration help",
+        },
+        {
+          icon: (
+            <TaskAltRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "40GB Cloud storage",
+        },
+        {
+          icon: (
+            <RemoveCircleOutlineRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Support team full assist",
+        },
+      ],
+    },
+    {
+      title: "company",
+      desc: "Free access for 200 members",
+      price: ["$", "399", "year"],
+      options: [
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Complete documentation",
+        },
+        {
+          icon: (
+            <TaskAltRounded className="h-5 w-5 text-blue-gray-900" />
+          ),
+          info: "Working materials in Sketch",
+        },
+        {
+          icon: (
+            <TaskAltRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Integration help",
+        },
+        {
+          icon: (
+            <TaskAltRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "40GB Cloud storage",
+        },
+        {
+          icon: (
+            <TaskAltRounded
+              strokeWidth={2.5}
+              className="h-5 w-5 text-blue-gray-900"
+            />
+          ),
+          info: "Support team full assist",
+        },
+      ],
+    },
+  ];
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Full Name
-        </label>
-        <input
-          type="text"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          className={`mt-1 block w-full px-3 py-2 border ${
-            errors.fullName ? "border-red-500" : "border-gray-300"
-          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-        />
-        {errors.fullName && (
-          <p className="mt-2 text-sm text-red-600">{errors.fullName}</p>
-        )}
+    <section className="py-24 px-8">
+      <div className="container mx-auto">
+        <Typography
+          color="blue-gray"
+          className="mb-4 font-bold text-lg"
+        >
+          Pricing Plans
+        </Typography>
+        <Typography
+          variant="h1"
+          color="blue-gray"
+          className="mb-4 !leading-snug lg:!text-4xl !text-2xl max-w-2xl"
+        >
+          Invest in a plan that&apos;s as ambitious as your corporate goals.
+        </Typography>
+        <Typography
+          variant="lead"
+          className="mb-10 font-normal !text-gray-500 max-w-xl"
+        >
+          Compare the benefits and features of each plan below to find the ideal
+          match for your business&apos;s budget and ambitions.
+        </Typography>
+        <div className="grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3 max-w-5xl">
+          {cards.map(({ title, desc, options, price }, key) => (
+            <PricingCard
+              key={key}
+              title={title}
+              desc={desc}
+              price={price}
+              options={options}
+            />
+          ))}
+        </div>
+        <Typography
+          variant="small"
+          className="mt-10 font-normal !text-gray-500"
+        >
+          You have Free Unlimited Updates and Premium Support on each package.
+          You also have 30 days to request a refund.
+        </Typography>
       </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={`mt-1 block w-full px-3 py-2 border ${
-            errors.email ? "border-red-500" : "border-gray-300"
-          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-        />
-        {errors.email && (
-          <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-        )}
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Phone Number
-        </label>
-        <input
-          type="text"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          className={`mt-1 block w-full px-3 py-2 border ${
-            errors.phone ? "border-red-500" : "border-gray-300"
-          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-        />
-        {errors.phone && (
-          <p className="mt-2 text-sm text-red-600">{errors.phone}</p>
-        )}
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Message</label>
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          className={`mt-1 block w-full px-3 py-2 border ${
-            errors.message ? "border-red-500" : "border-gray-300"
-          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-        />
-        {errors.message && (
-          <p className="mt-2 text-sm text-red-600">{errors.message}</p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Submit
-      </button>
-    </form>
+    </section>
   );
-};
+}
 
 export default Facilities;

@@ -10,16 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@docsearch/react": "^3.6.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@material-tailwind/react": "^2.1.9",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@rollup/rollup-win32-x64-msvc": "^4.21.2",
+    "apexcharts": "^3.53.0",
     "axios": "^1.7.5",
     "food-web": "file:",
     "react": "^18.3.1",
+    "react-apexcharts": "^1.4.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-responsive": "^10.0.0",

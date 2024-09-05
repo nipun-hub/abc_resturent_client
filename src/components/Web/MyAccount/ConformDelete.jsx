@@ -6,25 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function ConformDelete({ conformFunction }) {
-    const [open, setOpen] = React.useState(true);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+export default function ConformDelete({ open, close, conformFunction }) {
 
     return (
         <React.Fragment>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open alert dialog
-            </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={close}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -37,7 +25,7 @@ export default function ConformDelete({ conformFunction }) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Canal</Button>
+                    <Button onClick={close}>Canal</Button>
                     <Button onClick={conformFunction} autoFocus>
                         Logout
                     </Button>

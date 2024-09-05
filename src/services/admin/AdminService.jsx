@@ -177,3 +177,19 @@ export const getAllOrders = async () => {
         throw error;
     }
 }
+
+
+// response inquiry
+
+export const responseInquiry = async (id, data) => {
+    try {
+        const response = await axios.put(`${API_URL}/quiry/add-response/${id}`, { 'response': data }, {
+            headers: { Authorization: getAuthToken() }
+        });
+        notify('Successfully send response', 'success')
+        return response.data;
+    } catch (error) {
+        errorHandle(error)
+        throw error;
+    }
+}
