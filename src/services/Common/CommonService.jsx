@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8080/api';
 
 // get authorization token 
 const getAuthToken = () => {
-    return JSON.parse(localStorage.getItem('user')).authorization; // Adjust the key if needed
+    return JSON.parse(localStorage.getItem('user'))?.authorization; // Adjust the key if needed
 };
 
 // user Endpoint

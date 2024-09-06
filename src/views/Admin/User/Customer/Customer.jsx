@@ -14,13 +14,12 @@ const Customer = () => {
     useEffect(() => {
         getAllCustomers()
             .then(response => {
-                // console.log(response.content)
                 setDataList(response.content)
             })
             .catch((error) => {
                 console.log(error)
             })
-    },)
+    }, [])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);

@@ -8,7 +8,7 @@ const OrderCard = () => {
                 <img src="https://www.kfc.lk/images/KFC-Home.jpg" width={400} alt="" srcset="" />
             </div>
             <div className='w-full h-96 grid grid-rows-4'>
-                <p className='text-yellow-500'>Abc Food CHICKEN IS 100% LOCALLY SOURCED FROM OUR VERY OWN POULTRY FARMERS</p>
+                <p className='text-red-500'>Abc Food CHICKEN IS 100% LOCALLY SOURCED FROM OUR VERY OWN POULTRY FARMERS</p>
                 <p className='text-2xl font-normal'>Hand-Breaded, Freshly Prepared & Finger Licking' Good!</p>
                 <p className='text-2xl text-red-700 '>A Taste You Can Trust!</p>
                 <button className='bg-red-800 rounded text-white hover:bg-red-700 h-14 w-fit px-5 text-xl'>Order Now</button>

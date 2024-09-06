@@ -1,12 +1,14 @@
 import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, DialogFooter, DialogHeader, Typography } from '@material-tailwind/react'
 import React from 'react'
+import { StoreContext } from '../../../../../context/StoreContext'
+import { deleteCategory } from '../../../../../services/admin/AdminService'
 
 const Delete = ({ open, close, data }) => {
     const { setRerenderCategory } = React.useContext(StoreContext)
 
 
     const handelConform = () => {
-
+        deleteCategory(data.id)
         setRerenderCategory()
         close()
     }

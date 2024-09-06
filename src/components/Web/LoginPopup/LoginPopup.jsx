@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { StoreContext } from "../../../context/StoreContext";
 import { Navigate, useNavigate } from "react-router-dom";
-import { loginUser } from "../../../services/web/WebService,jsx";
+import { loginUser } from "../../../services/web/WebService.jsx";
 import { registerUser } from "../../../services/Common/CommonService";
 
 const notify = (message, type) => {
@@ -69,9 +69,8 @@ const LoginPopup = ({ open, close }) => {
                     const userToken = { token: response.data.id, authorization: response.headers.authorization, name: response.data.fullName, role: response.data.role };
                     localStorage.setItem('user', JSON.stringify(userToken));
                     refreshToken()
-                    if (response.data.role === "STAFF") {
-                        navigate('/admin')
-                        return <Navigate to="/admin" replace />;
+                    if (response.data.role === "STAFF" || response.data.role === "ADMIN") {
+                        window.location.href = '/admin';
                     }
                     close();
                 })

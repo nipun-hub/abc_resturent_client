@@ -38,12 +38,13 @@ export const placeOrder = async (orderData) => {
 
 export const getAllOrderById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/order?userId=${id}`, {
+        const response = await axios.get(`${API_URL}/order/orders`, {
+            params: { 'userId': id },
             headers: { Authorization: getAuthToken() }
         });
         return response.data;
     } catch (error) {
         errorHandle(error)
-        // throw error;
+        throw error;
     }
 }

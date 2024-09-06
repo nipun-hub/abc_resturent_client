@@ -9,8 +9,12 @@ const AdminRoutes = () => {
   const navigate = useNavigate();
   const { token } = useContext(StoreContext)
 
-  if (!token.token) {
+  if (!token?.token) {
     return <Navigate to="/" replace />;
+  } else {
+    if (!token?.role == 'ADMIN') {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return (

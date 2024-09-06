@@ -14,7 +14,7 @@ import Delete from './Alert/Delete';
 import View from './Alert/View';
 import { StoreContext } from '../../../../context/StoreContext';
 
-const columns = ["Name", 'Status'];
+const columns = ["Name", 'Status', 'Action'];
 
 export default function Category() {
     const { categoriesList } = React.useContext(StoreContext)
@@ -59,6 +59,7 @@ export default function Category() {
             {(addCategoryOpen || updateOpen) && <Add open={updateOpen ? updateOpen : addCategoryOpen} close={updateOpen ? closeUpdateAlert : closeAddCategoryAlert} data={updateOpen ? selectedCategoryData : null} />}
 
             <CategoryHead setOpen={() => setAddCategoryOpen(true)} />
+            <Delete open={deleteOpen} close={closeDeleteAlert} data={selectedCategoryData} />
 
             <Paper sx={{ overflow: 'hidden' }} className='mt-10 max-w-full me-0.5'>
                 <TableContainer >
@@ -112,11 +113,12 @@ export default function Category() {
                                                         </div>
                                                 }
                                             </TableCell>
-                                            {/* <TableCell className='border-s-2 border-gray-200 '>
+                                            <TableCell className='border-s-2 border-gray-200 '>
                                                 <span className='flex justify-center gap-3'>
                                                     <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
+                                                    <span onClick={() => openUpdateAlert(row.id)}><DriveFileRenameOutlineRounded className='text-blue-300 hover:scale-110 duration-150' /></span>
                                                 </span>
-                                            </TableCell> */}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}

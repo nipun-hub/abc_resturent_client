@@ -123,6 +123,34 @@ export const createCategory = async (body) => {
     }
 }
 
+export const updateCategory = async (id, value) => {
+    try {
+        const response = await axios.put(`${API_URL}/category/update/${id}`, { 'categoryName': value }, {
+            headers: { Authorization: getAuthToken() }
+        });
+        notify('Successfully updated category', 'success')
+        return response.data;
+    } catch (error) {
+        errorHandle(error)
+        throw error;
+    }
+}
+
+export const deleteCategory = async (id) => {
+    try {
+        const response = await axios.delete(`${API_URL}/category/delete/${id}`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        notify('Successfully deleted category', 'success')
+        return response.data;
+    } catch (error) {
+        errorHandle(error)
+        throw error;
+    }
+}
+
+
+
 // Offer Endpoints
 export const createOffer = async (body) => {
     try {
@@ -190,6 +218,53 @@ export const responseInquiry = async (id, data) => {
         return response.data;
     } catch (error) {
         errorHandle(error)
+        throw error;
+    }
+}
+
+
+// count api 
+
+export const getUserCount = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/user/customer-count`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getItemCount = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/item/item-count`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getCategoryCount = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/category/category-count`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getPendingOrderCount = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/order/pending-order-count`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
         throw error;
     }
 }

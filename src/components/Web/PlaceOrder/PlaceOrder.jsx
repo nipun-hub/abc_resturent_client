@@ -5,7 +5,7 @@ import { Checkbox, FormControlLabel, FormGroup, FormLabel, Radio, TextField } fr
 import { DeliveryDiningRounded, FlatwareRounded, Handshake, Hotel, LocalAtmRounded, LunchDining, Money, Payment, Restaurant, SnowshoeingRounded, VerifiedRounded } from '@mui/icons-material';
 import { StoreContext } from '../../../context/StoreContext';
 import { getUserId } from '../../../utils/Common/Notification';
-import { placeOrder } from '../../../services/web/WebService,jsx';
+import { placeOrder } from '../../../services/web/WebService.jsx';
 
 const style = {
   position: 'absolute',

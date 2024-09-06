@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import { AddCircleOutline, DeleteForever, RemoveCircleOutline } from '@mui/icons-material';
 import { StoreContext } from '../../../context/StoreContext';
 import { getAllOffers } from '../../../services/Common/CommonService';
+import { notify } from '../../../utils/Common/Notification';
 
 const modalStyle = {
   position: 'absolute',
@@ -18,7 +19,7 @@ const modalStyle = {
 };
 
 const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
-  const { cartItem, itemsList, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
+  const { token, cartItem, itemsList, addToCart, removeFromCart, deleteFromCart, getTotalCartAmount } = useContext(StoreContext);
 
   const [offers, setOffers] = React.useState([
     {
@@ -44,6 +45,15 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
       console.log(error)
     }
   })
+
+  const placeOrder = () => {
+    if (!token?.token) {
+      notify("Please login before try place the your order.", 'error')
+    } else {
+      setCheckoutClose();
+      setPlaceOrderOpen();
+    }
+  }
 
   const renderCartItems = () => {
     const cartItemEntries = Object.entries(cartItem);
@@ -129,7 +139,7 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
                     <p className='flex gap-3 items-center'>
                       <img src="https://www.kfc.lk/images/icons/stamp.png" alt="Total" width={50} />
                     </p>
-                    <p>Rs: {getTotalCartAmount() +300+50}.00</p>
+                    <p>Rs: {getTotalCartAmount() + 300 + 50}.00</p>
                   </div>
                   <div className='flex justify-between border-t-2 border-b-2 p-3 bg-gray-50'>
                     <p>Review your order before checkout.</p>
@@ -140,8 +150,7 @@ const Checkout = ({ checkoutOpen, setCheckoutClose, setPlaceOrderOpen }) => {
                   color="error"
                   fullWidth
                   onClick={() => {
-                    setCheckoutClose();
-                    setPlaceOrderOpen();
+                    placeOrder()
                   }}
                 >
                   Place Order
