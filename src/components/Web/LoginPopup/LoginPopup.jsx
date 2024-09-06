@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { StoreContext } from "../../../context/StoreContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../services/web/WebService,jsx";
+import { registerUser } from "../../../services/Common/CommonService";
 
 const notify = (message, type) => {
     type == 'success' && toast.success(message);
@@ -53,18 +55,12 @@ const LoginPopup = ({ open, close }) => {
         }
 
         if (currentState == 'Sign Up') {
-            axios.post('http://localhost:8080/api/user/register', formData)
+            registerUser(formData)
                 .then(response => {
-                    console.log(response)
-                    notify(`${response.data.message}. please login`, 'success')
                     setCurrentState('Sign In');
                 })
-                .catch((error) => {
-                    console.log("error is : ".error)
-                    errorHandle(error)
-                })
         } else if (currentState == 'Sign In') {
-            axios.post('http://localhost:8080/api/user/login', {
+            loginUser({
                 email: formData.email,
                 password: formData.password,
             })
@@ -73,7 +69,6 @@ const LoginPopup = ({ open, close }) => {
                     const userToken = { token: response.data.id, authorization: response.headers.authorization, name: response.data.fullName, role: response.data.role };
                     localStorage.setItem('user', JSON.stringify(userToken));
                     refreshToken()
-                    notify(`Welcome ${response.data.fullName}.`, 'success');
                     if (response.data.role === "STAFF") {
                         navigate('/admin')
                         return <Navigate to="/admin" replace />;

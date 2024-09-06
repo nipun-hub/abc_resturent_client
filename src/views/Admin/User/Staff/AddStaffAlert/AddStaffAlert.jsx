@@ -44,13 +44,10 @@ const AddStaffAlert = ({ open, close, rerender }) => {
     }
 
     return (
-        // <DialogPop isOpen={open} close={close} >
         <Dialog size="sm" open={open} handler={close} className="p-4">
-            {/* <div className="absolute bg-black opacity-60 inset-0 z-0"></div> */}
             <div className=" w-full p-10 bg-white rounded-xl z-10">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900">Register staff</h2>
-                    {/* <p className="mt-2 text-sm text-gray-400">Lorem ipsum is placeholder text.</p> */}
                 </div>
                 <form className="mt-8 space-y-3" onSubmit={(e) => handelSubmit(e)}>
                     <div className='md:flex gap-3'>
@@ -83,7 +80,7 @@ const AddStaffAlert = ({ open, close, rerender }) => {
                         <button type="submit"
                             className="my-5 w-full flex justify-center bg-red-500 text-gray-100 p-4  rounded-full tracking-wide
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300">
-                            Done
+                            Add
                         </button>
                     </div>
                 </form>

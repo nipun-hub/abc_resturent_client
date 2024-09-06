@@ -49,6 +49,10 @@ const StoreContextProvider = (props) => {
         return totalAmount;
     }
 
+    const resetCart = () => {
+        setCartItem({})
+    }
+
     const [categoriesList, setCategoriesList] = useState([])
     const [rerenderCategory, setRerenderCategory] = useState(false)
 
@@ -95,6 +99,7 @@ const StoreContextProvider = (props) => {
         deleteFromCart,
         removeFromCart,
         getTotalCartAmount,
+        resetCart,
         reviewsOpen,
         id,
         handleReviewsOpen,

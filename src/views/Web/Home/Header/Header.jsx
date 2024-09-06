@@ -26,7 +26,7 @@ const Header = () => {
     // slider end
 
     const [searchType, setSearchType] = useState('delivery');
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <div className="flex flex-col justify-center items-center static h-screen">
@@ -47,7 +47,7 @@ const Header = () => {
                     <div className='h-2/5'></div>
                     <div className='text-center items-center flex flex-col gap-4 h-3/5 bottom-0'>
                         <h2 className='text-3xl md:text-5xl font-bold'>Best Crispy Chicken in Sri Lanka</h2>
-                        <p className='font-bold text-gray-400'>KFC CHICKEN IS 100% LOCALLY SOURCED FROM OUR VERY OWN POULTRY FARMERS</p>
+                        <p className='font-bold text-gray-400'>Abc Food CHICKEN IS 100% LOCALLY SOURCED FROM OUR VERY OWN POULTRY FARMERS</p>
                         <p className='text-red-500'>A Taste You Can Trust!</p>
                         <img src={assets.logo} width={150} />
                     </div>

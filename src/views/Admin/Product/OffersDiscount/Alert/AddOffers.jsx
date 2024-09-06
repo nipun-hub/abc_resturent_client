@@ -247,7 +247,7 @@ const AddOffers = ({ open, close, data, rerender }) => {
                             <button type="submit" className="my-5 w-full flex justify-center bg-red-500 text-gray-100 p-4  rounded-full tracking-wide
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300"
                             >
-                                {data ? 'Update' : 'edit'}
+                                {data ? 'Update' : 'Add'}
                             </button>
                         </div>
                     </form>

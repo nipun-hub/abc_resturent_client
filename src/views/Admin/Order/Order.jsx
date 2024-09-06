@@ -154,7 +154,7 @@ export default function Category() {
                                                         </Tooltip>
                                                     </span>
                                                     <span onClick={() => openViewAlert(row.id)}>
-                                                        <Tooltip title="Delete">
+                                                        <Tooltip title="View">
                                                             <IconButton>
                                                                 <RemoveRedEyeRounded className='text-green-300 hover:scale-110 duration-150' />
                                                             </IconButton>

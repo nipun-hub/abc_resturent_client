@@ -14,8 +14,8 @@ const getAuthToken = () => {
 export const loginUser = async (body) => {
     try {
         const response = await axios.post(`${API_URL}/user/login`, body);
-        notify('Successfully login', 'success')
-        return response.data;
+        notify(`Welcome ${response.data.fullName}.`, 'success');
+        return response;
     } catch (error) {
         errorHandle(error)
         throw error;
@@ -33,5 +33,17 @@ export const placeOrder = async (orderData) => {
     } catch (error) {
         errorHandle(error)
         throw error;
+    }
+}
+
+export const getAllOrderById = async (id) => {
+    try {
+        const response = await axios.get(`${API_URL}/order?userId=${id}`, {
+            headers: { Authorization: getAuthToken() }
+        });
+        return response.data;
+    } catch (error) {
+        errorHandle(error)
+        // throw error;
     }
 }

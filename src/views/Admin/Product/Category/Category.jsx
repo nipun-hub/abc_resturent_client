@@ -14,7 +14,7 @@ import Delete from './Alert/Delete';
 import View from './Alert/View';
 import { StoreContext } from '../../../../context/StoreContext';
 
-const columns = ["Name", 'Status', 'Action'];
+const columns = ["Name", 'Status'];
 
 export default function Category() {
     const { categoriesList } = React.useContext(StoreContext)
@@ -112,11 +112,11 @@ export default function Category() {
                                                         </div>
                                                 }
                                             </TableCell>
-                                            <TableCell className='border-s-2 border-gray-200 '>
+                                            {/* <TableCell className='border-s-2 border-gray-200 '>
                                                 <span className='flex justify-center gap-3'>
                                                     <span onClick={() => openDeleteAlert(row.id)}><DeleteOutlineRounded className='text-red-300 hover:scale-110 duration-150' /></span>
                                                 </span>
-                                            </TableCell>
+                                            </TableCell> */}
                                         </TableRow>
                                     );
                                 })}

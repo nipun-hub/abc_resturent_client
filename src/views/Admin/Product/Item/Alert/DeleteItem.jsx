@@ -33,7 +33,7 @@ const DeleteItem = ({ open, close, data, rerender }) => {
                 <Button
                     variant="text"
                     color="gray"
-                    onClick={() => handleOpen(null)}
+                    onClick={close}
                     className="mr-1"
                 >
                     <span>Cancel</span>

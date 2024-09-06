@@ -18,12 +18,11 @@ const style = {
 };
 
 const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
-  console.log('call odoodo')
-  const { getTotalCartAmount, cartItem, itemsList } = useContext(StoreContext);
+  const { getTotalCartAmount, cartItem, itemsList, resetCart } = useContext(StoreContext);
   const subTotal = getTotalCartAmount() + 300 + 50;
 
   const [step, setStep] = useState(0); // select type ==> pay data ==> or dating ==> address ==>  done 
-  const [paymentMethod, setPaymentMethod] = useState('online'); // [ online , cod , visitShop ]
+  const [paymentMethod, setPaymentMethod] = useState('ONLINE'); // [ online , cod , visitShop ]
   const [orderType, setOrderType] = useState('DINE_IN'); // [ DINE_IN , TAKE_AWAY , DELIVERY ]
 
   const [formData, setFormData] = useState({
@@ -66,6 +65,10 @@ const PlaceOrder = ({ Open, Close, handleCouponOpen }) => {
     }
     console.log(JSON.stringify(dataList))
     placeOrder(dataList)
+      .then(response => {
+        resetCart()
+        Close()
+      })
   }
 
   return (
