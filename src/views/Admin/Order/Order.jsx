@@ -111,7 +111,7 @@ export default function Category() {
                                             <TableCell className='border-s-2 border-gray-200 '>{row.orderType}</TableCell>
                                             <TableCell className='border-s-2 border-gray-200 '>
                                                 {
-                                                    row.status == "ACTIVE"
+                                                    row.status == "COMPLETED"
                                                         ? <div className='relative text-green-300 flex justify-center'>
                                                             <AdjustRounded className='animate-ping' sx={{ fontSize: 20 }} />
                                                             <AdjustRounded className='absolute ' sx={{ fontSize: 20 }} />
